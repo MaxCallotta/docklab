@@ -41,7 +41,7 @@ DockLab 是一款面向药物发现与计算化学研究的本地化分子对接
 
 ### 直接使用（Windows）
 
-从 [GitHub Releases](https://github.com/MaxCallotta/docklab/releases) 下载 `CaddPlatform.exe`，双击运行，浏览器将自动打开平台页面。
+从 [GitHub Releases](https://github.com/MCXDL/docklab/releases) 下载 `CaddPlatform.exe`，双击运行，浏览器将自动打开平台页面。
 
 - 支持 Windows 10/11 64 位
 - exe 已内置 Python 运行时、前端页面、RDKit、OpenBabel 与对接引擎

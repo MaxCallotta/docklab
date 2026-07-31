@@ -41,7 +41,7 @@ DockLab is a local-first molecular docking platform built for drug discovery and
 
 ### End Users (Windows)
 
-Download `CaddPlatform.exe` from [GitHub Releases](https://github.com/MaxCallotta/docklab/releases), double-click to launch, and the platform will open automatically in your browser.
+Download `CaddPlatform.exe` from [GitHub Releases](https://github.com/MCXDL/docklab/releases), double-click to launch, and the platform will open automatically in your browser.
 
 - Supports Windows 10/11 64-bit
 - The exe bundles the Python runtime, frontend, RDKit, OpenBabel, and docking engines
