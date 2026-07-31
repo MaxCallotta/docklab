@@ -1,0 +1,108 @@
+# DockLab
+
+**Local Molecular Docking & Visualization Platform**
+
+中文版：[README.md](README.md)
+
+## Overview
+
+DockLab is a local-first molecular docking platform built for drug discovery and computational chemistry research. It integrates molecular structure preprocessing, binding pocket prediction, docking parameter control, and interactive 3D result visualization into a reproducible and traceable scientific workflow. By combining automated pocket detection with manual 3D box adjustment, DockLab lowers the barrier to high-quality docking while preserving full control over calculation parameters.
+
+## Key Strengths
+
+- **Local-first and data-controlled**: All computations run locally. Molecular data and task records never depend on external cloud services, which is important for confidentiality and research compliance.
+- **End-to-end automation**: From PDB ID retrieval, format conversion, hydrogen addition and water removal, to pocket prediction, docking, scoring, and pose export, the platform supports the entire workflow.
+- **Interactive docking box**: Drag the box center and vertex handles directly in the 3D protein-ligand scene, with bidirectional synchronization to the parameter panel.
+- **Automated pocket prediction**: Built-in geometry-based cavity detection with optional FPocket integration for industrial-grade pocket identification, while retaining manual fine-tuning.
+- **Modular architecture**: Frontend, backend services, pocket prediction, and docking engines are fully decoupled for maintainability, testing, and extension.
+- **Professional parameters preserved**: Random seeds, CPU allocation, search depth, and timeout controls remain fully available without compromising precision.
+
+## Features
+
+| Module | Capability |
+| --- | --- |
+| Molecule input | PDB ID, CDXML, SDF, MOL, MOL2, SMILES |
+| Receptor preparation | Water/heteroatom removal, PDBQT generation |
+| 3D visualization | Protein cartoon, ligand poses, docking box rendering |
+| Docking box | Manual coordinates, canvas dragging, automated pocket prediction |
+| Docking engines | AutoDock Vina, AutoDock4/AutoGrid4 extension interface |
+| Result analysis | Multi-pose scoring, RMSD, CSV reports, pose export |
+| Task management | Local persistence, restart, batch delete, archive download |
+
+## Technology Stack
+
+- Frontend: Vue 3, Vite, Element Plus, 3Dmol.js, Pinia
+- Backend: FastAPI, Uvicorn, Pydantic
+- Molecular computing: RDKit, Biopython, OpenBabel
+- Docking: AutoDock Vina, AutoDock4 / AutoGrid4
+- Pocket prediction: Built-in geometry cavity detection with optional FPocket
+
+## Quick Start
+
+### End Users (Windows)
+
+Download `CaddPlatform.exe` from [GitHub Releases](https://github.com/MaxCallotta/docklab/releases), double-click to launch, and the platform will open automatically in your browser.
+
+- Supports Windows 10/11 64-bit
+- The exe bundles the Python runtime, frontend, RDKit, OpenBabel, and docking engines
+- Default data directory: `%LOCALAPPDATA%\CaddPlatform\data`
+- The data directory can be customized with the `PAX_DATA_ROOT` environment variable
+
+### Developers
+
+#### Requirements
+
+- Windows 10/11 64-bit (recommended)
+- Python 3.11+
+- Node.js 20+
+- Source mode requires OpenBabel, AutoDock Vina, and AutoDock4/AutoGrid4 installed locally
+
+#### Frontend
+
+```powershell
+cd frontend
+npm install
+npm run build
+```
+
+#### Backend
+
+```powershell
+cd backend
+pip install -r requirements.txt
+cd ..
+python scripts/run_app.py --host 127.0.0.1 --port 8000
+```
+
+Open http://127.0.0.1:8000 to use the platform.
+
+#### Tests
+
+```powershell
+cd backend
+python -m pytest -q
+```
+
+## Packaging
+
+```powershell
+python -m pip install pyinstaller
+python scripts/build_standalone_windows.py
+```
+
+The executable is generated at `dist\CaddPlatform.exe`. To bundle OpenBabel, AutoDock Vina, and AutoDock4/AutoGrid4 into the exe, place the tool directories under `tools/` or set `OPENBABEL_DIR`, `VINA_DIR`, and `AUTODOCK_TOOLS_DIR`.
+
+## Project Structure
+
+```text
+docklab/
+├── backend/       # FastAPI backend and molecular computing modules
+├── frontend/      # Vue3 frontend and 3D interaction UI
+├── scripts/       # Startup, test, packaging, and demo scripts
+├── docs/          # Release and maintenance documentation
+└── dist/          # Local build artifacts (not committed)
+```
+
+## Release and Contribution
+
+See [docs/GITHUB_RELEASE.md](docs/GITHUB_RELEASE.md) for release instructions. Issues and pull requests are welcome.
