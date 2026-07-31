@@ -1,8 +1,27 @@
-# DockLab
+<p align="center">
+  <img src="docs/assets/docklab-logo.svg" alt="DockLab Logo" width="140">
+</p>
 
-**Local Molecular Docking & Visualization Platform**
+<h1 align="center">DockLab</h1>
 
-中文版：[README.md](README.md)
+<p align="center">
+  <strong>Local Molecular Docking &amp; Visualization Platform</strong>
+</p>
+
+<p align="center">
+  中文版：<a href="README.md">README.md</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Windows%2010%2F11-0078D6?style=flat-square&logo=windows&logoColor=white" alt="Platform">
+  <img src="https://img.shields.io/badge/Version-0.8.0-1f6feb?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Node.js-20%2B-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/Frontend-Vue%203-42b883?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue 3">
+  <img src="https://img.shields.io/badge/Backend-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square" alt="PRs Welcome">
+</p>
 
 ## Overview
 

@@ -46,6 +46,8 @@
   - 文件：backend/app/__init__.py、frontend/package.json、frontend/package-lock.json
 - 前端生产构建拆包优化，将 Vue、Element Plus、3Dmol 等依赖拆分为独立缓存块
   - 文件：frontend/vite.config.js
+- README 增加专属 SVG 图标、居中标题与项目徽章
+  - 文件：docs/assets/docklab-logo.svg、README.md、README.en.md
 
 ### 修复
 - 上传文件名含非法字符或路径穿越时返回 500：增加文件名净化与统一友好错误
