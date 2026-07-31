@@ -1,6 +1,7 @@
 {
   "name": "cadd-frontend",
-  "version": "0.4.0",
+  "version": "0.8.0",
+  "description": "DockLab 本地分子对接平台前端界面",
   "private": true,
   "type": "module",
   "scripts": {

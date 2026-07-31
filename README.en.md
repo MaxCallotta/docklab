@@ -11,7 +11,7 @@ DockLab is a local-first molecular docking platform built for drug discovery and
 ## Key Strengths
 
 - **Local-first and data-controlled**: All computations run locally. Molecular data and task records never depend on external cloud services, which is important for confidentiality and research compliance.
-- **End-to-end automation**: From PDB ID retrieval, format conversion, hydrogen addition and water removal, to pocket prediction, docking, scoring, and pose export, the platform supports the entire workflow.
+- **End-to-end automation**: From PDB ID retrieval, format conversion, adding hydrogens and removing water, to pocket prediction, docking, scoring, and pose export, the platform supports the entire workflow.
 - **Interactive docking box**: Drag the box center and vertex handles directly in the 3D protein-ligand scene, with bidirectional synchronization to the parameter panel.
 - **Automated pocket prediction**: Built-in geometry-based cavity detection with optional FPocket integration for industrial-grade pocket identification, while retaining manual fine-tuning.
 - **Modular architecture**: Frontend, backend services, pocket prediction, and docking engines are fully decoupled for maintainability, testing, and extension.

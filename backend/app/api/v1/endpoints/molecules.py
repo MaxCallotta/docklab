@@ -129,9 +129,9 @@ def prepare_smiles(
 
 @router.get("/preview")
 def preview_file(
-    path: str = Query(..., description="Pax 数据根目录下的本地文件路径"),
+    path: str = Query(..., description="平台数据目录下的本地文件路径"),
 ) -> FileResponse:
-    """安全预览 Pax 数据根目录内的结构文件（禁止越界读取）。"""
+    """安全预览平台数据目录内的结构文件（禁止越界读取）。"""
 
     pax_root = get_paths().root.resolve()
     resolved = Path(path).resolve()

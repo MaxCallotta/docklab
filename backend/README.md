@@ -1,31 +1,42 @@
-# CADD 本地分子对接平台 - 后端代码框架
+# DockLab Backend
 
-本目录实现第三阶段交付：后端完整模块化代码框架，重点覆盖四大核心模块：
+DockLab 后端服务基于 FastAPI 构建，负责分子文件解析与预处理、结合口袋预测、对接引擎调度、任务持久化与可视化文件生成。
 
-1. 分子文件解析预处理模块（cdxml / PDB ID / PDB / SDF / SMILES）
-2. 对接引擎抽象调度层（BaseDockEngine + AutoDock Vina + 扩展模板）
-3. PyMOL 可视化生成模块（PmlGenerator + 本地 PyMOL 唤起）
-4. 任务管理持久化模块（TaskManager + 本地 JSON + 打包导出）
+## 模块结构
 
-## 快速体验
+| 模块 | 职责 |
+| --- | --- |
+| `app/chemistry` | 分子解析、格式转换、受体/配体预处理与口袋预测 |
+| `app/engines` | 对接引擎抽象层与 AutoDock Vina / AutoDock4 适配 |
+| `app/services` | 任务管理、对接流水线、结果导出与配置持久化 |
+| `app/visualization` | PyMOL/PML 可视化脚本生成 |
+| `app/api` | REST API 路由、请求模型与统一响应 |
+
+## 快速开始
 
 ```powershell
 cd backend
 pip install -r requirements.txt
 python scripts/check_env.py
-python scripts/demo_pipeline.py
-python -m pytest tests -v
+python -m pytest -q
 ```
 
-## 运行 FastAPI 服务
+启动后端服务：
 
 ```powershell
-cd backend
 uvicorn app.main:app --reload --port 8000
 ```
 
-打开 <http://127.0.0.1:8000/docs> 查看自动生成的接口文档。
+接口文档位于 http://127.0.0.1:8000/docs 。
+
+也可以从项目根目录使用单进程模式：
+
+```powershell
+python scripts/run_app.py --host 127.0.0.1 --port 8000
+```
 
 ## 数据目录
 
-所有运行期数据默认写入 `%LOCALAPPDATA%\CaddPlatform\data`，可通过环境变量 `PAX_DATA_ROOT` 覆盖。
+- 默认数据目录：`%LOCALAPPDATA%\CaddPlatform\data`
+- 可通过环境变量 `PAX_DATA_ROOT` 覆盖
+- 任务、缓存、日志与配置统一写入数据目录

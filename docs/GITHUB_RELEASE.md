@@ -5,7 +5,7 @@
 在项目目录执行：
 
 ```powershell
-cd path\to\docklab
+cd docklab
 git init
 git add .
 git commit -m "chore: init cadd platform repository"

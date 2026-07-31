@@ -1,6 +1,6 @@
 # 更新记录
 
-本文件用于追溯每次模块化迭代。新增功能必须同步更新本文件并列出涉及文件。
+本文档用于记录 DockLab 的模块化迭代历史，按版本号倒序排列。
 
 ## 模板
 
@@ -22,6 +22,29 @@
 
 ## [0.8.0] 2026-07-31
 
+### 新增
+- 3D 对接盒子可视化拖拽与参数双向同步
+  - 文件：frontend/src/components/molecule/BoxDrag.vue、MoleculeViewer3D.vue
+- 自动口袋盒子预测接口与前端一键生成入口
+  - 文件：backend/app/chemistry/pocket_predictor.py
+  - 文件：backend/app/api/v1/endpoints/docking.py
+- 单文件 exe 打包配置与 GitHub Release 发布支持
+  - 文件：scripts/cadd_platform.spec、build_standalone_windows.py
+- 后端补充 mol/mol2 配体预处理，前端配体上传支持 cdxml/sdf/mol/mol2/smi/txt
+  - 文件：backend/app/chemistry/prep/openbabel_ligand_preprocessor.py
+  - 文件：frontend/src/utils/constants.js
+- 上传接口增加服务端大小限制（UPLOAD_MAX_MB）
+  - 文件：backend/app/api/v1/endpoints/molecules.py
+  - 文件：backend/app/core/exceptions.py
+- 中英双语项目 README
+  - 文件：README.md、README.en.md
+
+### 修改
+- 移除代码与文档中的本机硬编码路径，数据目录默认为用户级目录
+  - 文件：backend/app/core/config.py、scripts/run_app.py、README.md
+- 统一版本号为 0.8.0
+  - 文件：backend/app/__init__.py、frontend/package.json、frontend/package-lock.json
+
 ### 修复
 - 上传文件名含非法字符或路径穿越时返回 500：增加文件名净化与统一友好错误
   - 文件：backend/app/utils/file_utils.py
@@ -34,13 +57,13 @@
 - 3D 预览渲染时 getModelCount 报错：改用模型序号设置样式
   - 文件：frontend/src/components/molecule/MoleculeViewer3D.vue
 
+## [0.7.0] 2026-07-31
+
 ### 新增
-- 后端补充 mol/mol2 配体预处理，前端配体上传支持 cdxml/sdf/mol/mol2/smi/txt
-  - 文件：backend/app/chemistry/prep/openbabel_ligand_preprocessor.py
-  - 文件：frontend/src/utils/constants.js
-- 上传接口增加服务端大小限制（UPLOAD_MAX_MB）
-  - 文件：backend/app/api/v1/endpoints/molecules.py
-  - 文件：backend/app/core/exceptions.py
+- 最小完整 Demo 闭环脚本
+  - 文件：scripts/demo_closed_loop.py
+- Demo 复现文档与扩展点位总表
+  - 文件：outputs/docs/06-demo-closed-loop.md
 
 ## [0.6.0] 2026-07-31
 
@@ -50,14 +73,6 @@
   - 文件：scripts/install_deps.py、run_app.py、package_app.py
 - FastAPI 单进程托管前端 dist
   - 文件：backend/app/main.py
-
-## [0.7.0] 2026-07-31
-
-### 新增
-- 最小完整 Demo 闭环脚本
-  - 文件：scripts/demo_closed_loop.py
-- Demo 复现文档与扩展点位总表
-  - 文件：outputs/docs/06-demo-closed-loop.md
 
 ## [0.5.0] 2026-07-31
 
@@ -70,7 +85,7 @@
 ## [0.4.0] 2026-07-31
 
 ### 新增
-- Vue3 + Element Plus + 3Dmol.js 五页面前端
+- Vue3 + Element Plus + 3Dmol.js 包含五个页面的前端应用
   - 文件：frontend/src/views/*
 - 文件预览、pose 导出、配置模板等配套接口
   - 文件：backend/app/api/v1/endpoints/*

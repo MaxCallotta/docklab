@@ -4,7 +4,7 @@
     pip install pyinstaller
     python scripts/install_deps.py
 
-产物：dist/CaddPlatform/CaddPlatform.exe
+产物：dist/CaddPlatform.exe
 """
 
 from __future__ import annotations

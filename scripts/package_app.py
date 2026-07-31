@@ -18,7 +18,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.0"
+VERSION = "0.8.0"
+IGNORED_DIRS = {".git", "__pycache__", ".pytest_cache", ".venv", "node_modules", "dist"}
 
 
 def _run(cmd: list[str], cwd: Path) -> None:
@@ -29,8 +30,7 @@ def _run(cmd: list[str], cwd: Path) -> None:
 def _ignore_common(dirname: str, names: list[str]) -> list[str]:
     """排除构建/缓存/虚拟环境目录。"""
 
-    ignored = {".git", "__pycache__", ".pytest_cache", ".venv", "node_modules", "dist"}
-    return [name for name in names if name in ignored]
+    return [name for name in names if name in IGNORED_DIRS]
 
 
 def build_frontend() -> None:
@@ -55,12 +55,12 @@ def make_source_zip(out_dir: Path) -> Path:
             for file_path in sorted(src.rglob("*")):
                 if not file_path.is_file():
                     continue
-                if any(part in _ignore_common("", []) for part in file_path.parts):
+                if any(part in IGNORED_DIRS for part in file_path.parts):
                     continue
                 if file_path.name in {"package-lock.json"}:
                     continue
                 zf.write(file_path, file_path.relative_to(ROOT))
-        for extra in ("README.md", "CHANGELOG.md"):
+        for extra in ("README.md", "README.en.md", "CHANGELOG.md"):
             path = ROOT / extra
             if path.exists():
                 zf.write(path, extra)
@@ -83,6 +83,8 @@ def make_portable(out_dir: Path) -> Path:
     shutil.copy2(ROOT / "scripts" / "demo_closed_loop.py", target / "scripts" / "demo_closed_loop.py")
     if (ROOT / "README.md").exists():
         shutil.copy2(ROOT / "README.md", target / "README.md")
+    if (ROOT / "README.en.md").exists():
+        shutil.copy2(ROOT / "README.en.md", target / "README.en.md")
     if (ROOT / "CHANGELOG.md").exists():
         shutil.copy2(ROOT / "CHANGELOG.md", target / "CHANGELOG.md")
     demo_doc = ROOT / "outputs" / "docs" / "06-demo-closed-loop.md"
