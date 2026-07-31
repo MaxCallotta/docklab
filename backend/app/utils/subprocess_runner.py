@@ -39,7 +39,7 @@ def resolve_executable(executable: str | Path | None) -> str:
     """解析可执行程序：支持绝对路径或 PATH 探测。"""
 
     if not executable:
-        raise EngineNotFoundError("未配置可执行程序路径，请检查环境变量或 D:\\Pax_2.0\\config\\engines.json")
+        raise EngineNotFoundError("未配置可执行程序路径，请检查环境变量或数据目录 config/engines.json")
 
     path = Path(executable)
     if path.exists():

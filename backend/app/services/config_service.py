@@ -11,7 +11,7 @@ from app.utils.file_utils import ensure_dir
 
 
 class ConfigService:
-    """将软件路径、全局默认值、参数模板保存到 D:\\Pax_2.0\\config。"""
+    """将软件路径、全局默认值、参数模板保存到数据目录 config。"""
 
     def __init__(self, paths=None) -> None:
         self.paths = paths or get_paths()

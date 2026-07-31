@@ -19,7 +19,8 @@ dist/
 *.spec.bak
 
 # 本地运行数据
-D:\Pax_2.0/
+data/
+tools/
 tasks/
 cache/
 logs/

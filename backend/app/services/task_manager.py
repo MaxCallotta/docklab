@@ -4,7 +4,7 @@
 - 每个任务唯一 ID 与独立目录（input/prepared/work/output/export）；
 - meta.json 原子持久化任务状态：queued/running/completed/failed；
 - 历史查询、失败任务重启、批量删除、全结果打包下载；
-- 全部数据仅存储本地磁盘（默认 D:\\Pax_2.0\\tasks）。
+- 全部数据仅存储本地磁盘（默认数据目录 tasks）。
 """
 
 from __future__ import annotations

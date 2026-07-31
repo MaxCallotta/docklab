@@ -65,9 +65,11 @@ python scripts/build_standalone_windows.py
 
 产物位于 `dist\CaddPlatform.exe`。
 
+如需把 OpenBabel、AutoDock Vina、AutoDock4/AutoGrid4 一起打包进 exe，将对应工具目录放入项目 `tools/` 下，或设置环境变量 `OPENBABEL_DIR`、`VINA_DIR`、`AUTODOCK_TOOLS_DIR`。
+
 ## 数据目录
 
-- 默认数据目录：`D:\Pax_2.0`
+- 默认数据目录：`%LOCALAPPDATA%\CaddPlatform\data`（Windows）
 - 可通过环境变量 `PAX_DATA_ROOT` 覆盖
 - 任务、缓存、日志统一写入数据目录
 

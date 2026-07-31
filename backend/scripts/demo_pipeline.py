@@ -1,10 +1,10 @@
 """端到端示例脚本：cdxml 配体 -> PDB 受体 -> Vina 对接 -> PML -> 任务持久化。
 
 用法：
-    python scripts/demo_pipeline.py --root D:\\Pax_2.0
+    python scripts/demo_pipeline.py --root data
 
 说明：
-- 默认使用 D:\\Pax_2.0 作为运行数据根目录；
+- 默认使用平台数据目录；
 - 未安装 Vina 时自动跳过实际对接，仅演示预处理/可视化/持久化链路。
 """
 
@@ -52,7 +52,7 @@ def main() -> int:
     """运行演示流水线。"""
 
     parser = argparse.ArgumentParser(description="CADD 后端模块演示")
-    parser.add_argument("--root", default=None, help="运行数据根目录（默认 D:\\Pax_2.0）")
+    parser.add_argument("--root", default=None, help="运行数据根目录，默认使用平台数据目录")
     parser.add_argument("--clean", action="store_true", help="演示结束后删除演示任务")
     args = parser.parse_args()
 

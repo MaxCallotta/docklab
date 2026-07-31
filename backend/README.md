@@ -28,4 +28,4 @@ uvicorn app.main:app --reload --port 8000
 
 ## 数据目录
 
-所有运行期数据默认写入 `D:\Pax_2.0`，可通过环境变量 `PAX_DATA_ROOT` 覆盖。
+所有运行期数据默认写入 `%LOCALAPPDATA%\CaddPlatform\data`，可通过环境变量 `PAX_DATA_ROOT` 覆盖。

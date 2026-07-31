@@ -10,15 +10,12 @@
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 from pathlib import Path
 
 
 BACKEND_DIR = Path(__file__).resolve().parents[1] / "backend"
 sys.path.insert(0, str(BACKEND_DIR))
-
-os.environ.setdefault("PAX_DATA_ROOT", r"D:\Pax_2.0")
 
 
 def main() -> int:
@@ -31,10 +28,11 @@ def main() -> int:
 
     import uvicorn  # noqa: PLC0415
 
+    from app.core.config import get_settings  # noqa: PLC0415
     from app.main import app  # noqa: PLC0415
 
     print(f"CADD 平台启动：http://{args.host}:{args.port}")
-    print(f"数据目录：{os.environ.get('PAX_DATA_ROOT')}")
+    print(f"数据目录：{get_settings().pax_data_root}")
     uvicorn.run(app, host=args.host, port=args.port, log_level="info")
     return 0
 

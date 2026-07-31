@@ -2,7 +2,7 @@
 
 使用 Kombu Filesystem Transport 作为本地文件队列：
 - 无 Redis / 无数据库；
-- 队列消息与结果均落在 D:\\Pax_2.0\\cache\\celery。
+- 队列消息与结果均落在数据目录 cache/celery。
 """
 
 from __future__ import annotations

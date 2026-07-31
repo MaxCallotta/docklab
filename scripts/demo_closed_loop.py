@@ -1,7 +1,7 @@
 """最小完整 Demo：cdxml -> PDB ID 下载 -> Vina 对接 -> PML -> CSV -> ZIP。
 
 用法：
-    python scripts/demo_closed_loop.py --pdb-id 1CRN --root D:\\Pax_2.0
+    python scripts/demo_closed_loop.py --pdb-id 1CRN --root data
     python scripts/demo_closed_loop.py --open-pymol   # 额外唤起本地 PyMOL
 
 说明：
@@ -55,7 +55,7 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(description="CADD 平台闭环 Demo")
     parser.add_argument("--pdb-id", default="1CRN", help="RCSB PDB ID，默认 1CRN")
-    parser.add_argument("--root", default=None, help="数据根目录，默认 D:\\Pax_2.0")
+    parser.add_argument("--root", default=None, help="数据根目录，默认使用平台数据目录")
     parser.add_argument("--clean", action="store_true", help="演示结束后删除任务")
     parser.add_argument("--open-pymol", action="store_true", help="演示结束后唤起本地 PyMOL")
     args = parser.parse_args()

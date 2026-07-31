@@ -2,7 +2,7 @@
 
 配置优先级：
 1. 环境变量（最高）
-2. D:\\Pax_2.0\\config\\engines.json 运行期配置
+2. 数据目录 config/engines.json 运行期配置
 3. 系统 PATH 自动探测
 
 代码中禁止硬编码绝对路径，统一通过本模块获取。
@@ -20,18 +20,13 @@ from pathlib import Path
 
 
 def _default_data_root() -> Path:
-    """返回默认数据目录：优先使用环境变量，打包后自动选择本机数据目录。"""
+    """返回默认数据目录：优先使用环境变量，未指定时使用当前用户平台数据目录。"""
 
     env_root = os.environ.get("PAX_DATA_ROOT")
     if env_root:
         return Path(env_root)
-    if getattr(sys, "frozen", False):
-        legacy_root = Path(r"D:\Pax_2.0")
-        if legacy_root.exists():
-            return legacy_root
-        local_root = Path(os.environ.get("LOCALAPPDATA") or Path.home())
-        return local_root / "CaddPlatform" / "data"
-    return Path(r"D:\Pax_2.0")
+    local_root = Path(os.environ.get("LOCALAPPDATA") or Path.home())
+    return local_root / "CaddPlatform" / "data"
 
 
 DEFAULT_PAX_DATA_ROOT = _default_data_root()
@@ -94,7 +89,7 @@ class Settings:
     def load(cls) -> "Settings":
         """从环境变量与运行期配置构建 Settings。"""
 
-        root = Path(os.environ.get("PAX_DATA_ROOT", str(DEFAULT_PAX_DATA_ROOT))).resolve()
+        root = Path(os.environ.get("PAX_DATA_ROOT") or str(DEFAULT_PAX_DATA_ROOT)).resolve()
 
         # 读取运行期配置覆盖（如用户修改了引擎安装路径）
         runtime_config: dict = {}

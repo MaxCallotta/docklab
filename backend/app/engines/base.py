@@ -77,7 +77,7 @@ class BaseDockEngine(ABC):
             engine_id=self.engine_id,
             available=False,
             errors=[f"{self.engine_name} 可执行程序未找到"],
-            hints=[f"请安装 {self.engine_name} 并在 D:\\Pax_2.0\\config\\engines.json 中配置路径"],
+            hints=[f"请安装 {self.engine_name} 并在数据目录 config/engines.json 中配置路径"],
         )
 
     def run_pipeline(self, params: DockParams, work_dir: Path) -> DockResult:

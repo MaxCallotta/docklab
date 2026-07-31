@@ -2,6 +2,7 @@
 
 """CaddPlatform 单文件 exe 打包配置。"""
 
+import os
 from pathlib import Path
 
 from PyInstaller.utils.hooks import collect_all
@@ -45,17 +46,18 @@ if backend_app.exists():
         datas.append((str(requirements), "backend"))
 
 # 外部计算引擎：OpenBabel、AutoDock Vina、AutoDock4 / AutoGrid4
-openbabel_root = Path(r"D:\openbabel\OpenBabel-3.1.1")
+tools_root = ROOT / "tools"
+openbabel_root = Path(os.environ.get("OPENBABEL_DIR") or tools_root / "OpenBabel-3.1.1")
 if openbabel_root.exists():
     datas += _tree(openbabel_root, "external/openbabel")
 
-vina_root = Path(r"D:\autodock_vina")
+vina_root = Path(os.environ.get("VINA_DIR") or tools_root / "autodock_vina")
 for filename in ("vina.exe", "vina_split.exe", "vina_license.rtf"):
     source = vina_root / filename
     if source.exists():
         datas.append((str(source), "external/autodock_vina"))
 
-autodock_root = Path(r"D:\autodock_tools")
+autodock_root = Path(os.environ.get("AUTODOCK_TOOLS_DIR") or tools_root / "autodock_tools")
 for filename in (
     "autodock4.exe",
     "autogrid4.exe",
