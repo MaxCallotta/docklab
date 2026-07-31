@@ -15,6 +15,16 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: false
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vue: ['vue', 'vue-router', 'pinia'],
+          element: ['element-plus', '@element-plus/icons-vue'],
+          mol: ['3dmol'],
+          axios: ['axios']
+        }
+      }
+    }
   }
 })

@@ -44,6 +44,8 @@
   - 文件：backend/app/core/config.py、scripts/run_app.py、README.md
 - 统一版本号为 0.8.0
   - 文件：backend/app/__init__.py、frontend/package.json、frontend/package-lock.json
+- 前端生产构建拆包优化，将 Vue、Element Plus、3Dmol 等依赖拆分为独立缓存块
+  - 文件：frontend/vite.config.js
 
 ### 修复
 - 上传文件名含非法字符或路径穿越时返回 500：增加文件名净化与统一友好错误
