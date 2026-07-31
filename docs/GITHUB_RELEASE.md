@@ -10,7 +10,7 @@ git init
 git add .
 git commit -m "chore: init cadd platform repository"
 git branch -M main
-git remote add origin https://github.com/<用户名>/<仓库名>.git
+git remote add origin https://github.com/MaxCallotta/docklab.git
 git push -u origin main
 ```
 
@@ -34,7 +34,7 @@ git push origin v0.8.0
 将 README 中的占位地址替换为实际地址：
 
 ```text
-https://github.com/<用户名>/<仓库名>/releases/latest/download/CaddPlatform.exe
+https://github.com/MaxCallotta/docklab/releases/latest/download/CaddPlatform.exe
 ```
 
 ## 发布说明模板

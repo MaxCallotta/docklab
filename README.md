@@ -19,7 +19,7 @@
 
 当前 exe 为 Windows 10/11 64 位单文件版本，已内置 Python 运行环境、前端页面、RDKit、OpenBabel、AutoDock Vina 和 AutoDock4/AutoGrid4。
 
-> 下载地址示例：`https://github.com/<用户名>/<仓库名>/releases/latest/download/CaddPlatform.exe`
+> 下载地址：`https://github.com/MaxCallotta/docklab/releases/latest/download/CaddPlatform.exe`
 
 ## 源码运行（开发者）
 
