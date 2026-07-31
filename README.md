@@ -113,3 +113,9 @@ docklab/
 ## 发布与贡献
 
 发布步骤见 [docs/GITHUB_RELEASE.md](docs/GITHUB_RELEASE.md)。欢迎通过 GitHub Issues 反馈问题，或提交 Pull Request 参与改进。
+
+贡献规范见 [CONTRIBUTING.md](CONTRIBUTING.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
+
+## License
+
+本项目采用 [MIT License](LICENSE)。

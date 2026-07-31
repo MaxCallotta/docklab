@@ -113,3 +113,9 @@ docklab/
 ## Release and Contribution
 
 See [docs/GITHUB_RELEASE.md](docs/GITHUB_RELEASE.md) for release instructions. Issues and pull requests are welcome.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and [SECURITY.md](SECURITY.md) for security reporting.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
