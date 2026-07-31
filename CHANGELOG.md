@@ -48,6 +48,8 @@
   - 文件：frontend/vite.config.js
 - README 增加专属 SVG 图标、居中标题与项目徽章
   - 文件：docs/assets/docklab-logo.svg、README.md、README.en.md
+- 新增 Citation、Zenodo 元数据与推广指南
+  - 文件：CITATION.cff、.zenodo.json、docs/PROMOTION.md
 
 ### 修复
 - 上传文件名含非法字符或路径穿越时返回 500：增加文件名净化与统一友好错误

@@ -21,6 +21,7 @@
   <img src="https://img.shields.io/badge/Frontend-Vue%203-42b883?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue 3">
   <img src="https://img.shields.io/badge/Backend-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square" alt="PRs Welcome">
+  <a href="https://github.com/MCXDL/docklab/discussions"><img src="https://img.shields.io/badge/Discussions-join-1f6feb?style=flat-square&logo=github&logoColor=white" alt="Discussions"></a>
 </p>
 
 ## Overview
@@ -138,3 +139,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and [SECURITY
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## Citation
+
+If DockLab is useful in your research, please cite this repository. See [CITATION.cff](CITATION.cff) for citation details.

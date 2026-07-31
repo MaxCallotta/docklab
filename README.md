@@ -21,6 +21,7 @@
   <img src="https://img.shields.io/badge/Frontend-Vue%203-42b883?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue 3">
   <img src="https://img.shields.io/badge/Backend-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square" alt="PRs Welcome">
+  <a href="https://github.com/MCXDL/docklab/discussions"><img src="https://img.shields.io/badge/Discussions-join-1f6feb?style=flat-square&logo=github&logoColor=white" alt="Discussions"></a>
 </p>
 
 ## 项目简介
@@ -138,3 +139,7 @@ docklab/
 ## License
 
 本项目采用 [MIT License](LICENSE)。
+
+## Citation
+
+如果 DockLab 对你的研究有帮助，欢迎在论文中引用本仓库，引用格式见 [CITATION.cff](CITATION.cff)。

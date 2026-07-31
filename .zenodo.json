@@ -1,0 +1,23 @@
+{
+  "title": "DockLab: Local Molecular Docking & Visualization Platform",
+  "description": "DockLab is a local-first molecular docking and visualization platform for drug discovery and computational chemistry research. It integrates molecular preprocessing, binding pocket prediction, AutoDock Vina docking, and interactive 3D result analysis.",
+  "creators": [
+    {
+      "name": "MCXDL"
+    }
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "keywords": [
+    "molecular docking",
+    "cadd",
+    "drug discovery",
+    "cheminformatics",
+    "bioinformatics",
+    "autodock-vina",
+    "rdkit",
+    "fastapi",
+    "vue3",
+    "3dmol"
+  ]
+}
