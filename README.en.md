@@ -49,6 +49,12 @@ Download `CaddPlatform.exe` from [GitHub Releases](https://github.com/MaxCallott
 - Default data directory: `%LOCALAPPDATA%\CaddPlatform\data`
 - The data directory can be customized with the `PAX_DATA_ROOT` environment variable
 
+## Access Notes
+
+`127.0.0.1` is the loopback address of the machine running the program. Each user runs the exe on their own computer and opens http://127.0.0.1:8000 locally.
+
+To share a single instance over a local network, start the service with `--host 0.0.0.0` and let other devices access the server's LAN IP address.
+
 ### Developers
 
 #### Requirements
