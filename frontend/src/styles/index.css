@@ -1,0 +1,74 @@
+:root {
+  --cadd-bg: #f4f6f9;
+  --cadd-panel: #ffffff;
+  --cadd-ink: #24303d;
+  --cadd-muted: #5f6f80;
+  --cadd-border: #d7dfe8;
+  --cadd-accent: #2f6db3;
+  --cadd-accent-soft: #eaf2fb;
+  --cadd-ok: #2e8b57;
+  --cadd-warn: #b7791f;
+  --cadd-danger: #b3372f;
+  --cadd-radius: 6px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--cadd-bg);
+  color: var(--cadd-ink);
+  font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+.el-card,
+.el-dialog,
+.el-message-box {
+  border-radius: var(--cadd-radius);
+}
+
+.el-card {
+  border: 1px solid var(--cadd-border);
+  box-shadow: none;
+}
+
+.el-button {
+  border-radius: var(--cadd-radius);
+}
+
+.el-table {
+  --el-table-border-color: var(--cadd-border);
+  --el-table-header-bg-color: #f0f3f7;
+}
+
+.page-shell {
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.page-title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cadd-ink);
+}
+
+.muted {
+  color: var(--cadd-muted);
+}
+
+.mono {
+  font-family: Consolas, "Courier New", monospace;
+}
