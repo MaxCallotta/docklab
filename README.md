@@ -45,6 +45,7 @@ DockLab 是一款面向药物发现与计算化学研究的本地化分子对接
 
 - 支持 Windows 10/11 64 位
 - exe 已内置 Python 运行时、前端页面、RDKit、OpenBabel 与对接引擎
+- 使用 exe 无需预装 Python、RDKit、OpenBabel、AutoDock Vina 或 AutoDock4
 - 默认数据目录：`%LOCALAPPDATA%\CaddPlatform\data`
 - 可通过环境变量 `PAX_DATA_ROOT` 自定义数据目录
 

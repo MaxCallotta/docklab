@@ -45,6 +45,7 @@ Download `CaddPlatform.exe` from [GitHub Releases](https://github.com/MaxCallott
 
 - Supports Windows 10/11 64-bit
 - The exe bundles the Python runtime, frontend, RDKit, OpenBabel, and docking engines
+- No pre-installation of Python, RDKit, OpenBabel, AutoDock Vina, or AutoDock4 is required
 - Default data directory: `%LOCALAPPDATA%\CaddPlatform\data`
 - The data directory can be customized with the `PAX_DATA_ROOT` environment variable
 
