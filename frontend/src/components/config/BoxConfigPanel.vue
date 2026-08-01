@@ -107,6 +107,10 @@ const boxMode = defineModel('boxMode', { type: String, default: BOX_MODE.MANUAL 
   width: 100%;
 }
 
+.box-grid :deep(.el-input-number) {
+  width: 100%;
+}
+
 .box-note {
   margin-left: 10px;
   font-size: 12px;

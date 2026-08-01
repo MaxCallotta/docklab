@@ -48,6 +48,8 @@
   - 文件：frontend/src/i18n/index.js
 - 新增后端消息英文翻译器，覆盖预处理、对接、PDB、任务、引擎等提示
   - 文件：frontend/src/utils/backendMessages.js、frontend/src/api/http.js、frontend/src/views/HomeView.vue、frontend/src/views/ResultView.vue
+- 新建任务页左侧栏加宽，右侧预览区新增悬浮式 3D 视图控制与盒子快捷操作栏
+  - 文件：frontend/src/views/HomeView.vue、frontend/src/components/molecule/MoleculeViewer3D.vue、frontend/src/components/config/BoxConfigPanel.vue
 
 ### 修改
 - 移除代码与文档中的本机硬编码路径，数据目录默认为用户级目录

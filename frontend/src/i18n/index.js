@@ -229,6 +229,7 @@ const messages = {
     '构象 {index}  ({affinity} kcal/mol)': 'Pose {index}  ({affinity} kcal/mol)',
     '盒子中心 ({x}, {y}, {z})': 'Box center ({x}, {y}, {z})',
     '尺寸 ({x}, {y}, {z})': 'Size ({x}, {y}, {z})',
+    '尺寸': 'Size',
     '任务 {id}': 'Task {id}',
     '属性：MW {weight}，可旋转键 {bonds}': 'Properties: MW {weight}, rotatable bonds {bonds}',
     '支持：{accept}，最大 {max} MB': 'Supported: {accept}, max {max} MB',
@@ -240,7 +241,25 @@ const messages = {
     '拖拽已自动限制在合理范围：中心 ±2000 Å，尺寸 1–200 Å': 'Dragging is automatically limited to the valid range: center ±2000 Å, size 1–200 Å',
     '拖拽盒体移动中心': 'Drag the box body to move the center',
     '拖拽顶点调整盒子尺寸': 'Drag a vertex to resize the box',
-    '网络请求失败，请检查后端服务': 'Network request failed. Please check the backend service.'
+    '网络请求失败，请检查后端服务': 'Network request failed. Please check the backend service.',
+    '视图控制': 'View Controls',
+    '重置视角': 'Reset View',
+    '自适应居中': 'Center View',
+    '卡通': 'Cartoon',
+    '表面': 'Surface',
+    '线框': 'Wireframe',
+    '隐藏盒子': 'Hide Box',
+    '显示盒子': 'Show Box',
+    '隐藏配体': 'Hide Ligand',
+    '显示配体': 'Show Ligand',
+    '导出PNG': 'Export PNG',
+    '盒子快捷操作': 'Box Shortcuts',
+    '居中到配体': 'Center on Ligand',
+    '居中到蛋白': 'Center on Protein',
+    '对齐到预测口袋': 'Align to Predicted Pocket',
+    '残基数': 'Residues',
+    '原子数': 'Atoms',
+    '分子量': 'Molecular Weight'
   }
 }
 

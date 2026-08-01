@@ -102,13 +102,37 @@
           <div class="preview-guide muted">
             {{ $t('可拖拽立方体调整对接盒子，或点击左侧自动生成口袋快速获取最优结合位点') }}
           </div>
-          <MoleculeViewer3D
-            :files="mergeFiles"
-            :box="box3d"
-            height="560px"
-            :interactive="true"
-            @box-change="onCanvasBoxChange"
-          />
+          <div class="preview-stage">
+            <MoleculeViewer3D
+              ref="previewViewer"
+              :files="mergeFiles"
+              :box="box3d"
+              height="560px"
+              :interactive="true"
+              @box-change="onCanvasBoxChange"
+            />
+            <div class="preview-controls">
+              <div class="controls-group">
+                <span class="controls-label">{{ $t('视图控制') }}</span>
+                <el-button size="small" text class="control-btn" @click="resetView">{{ $t('重置视角') }}</el-button>
+                <el-button size="small" text class="control-btn" @click="centerView">{{ $t('自适应居中') }}</el-button>
+                <el-button size="small" text class="control-btn" :class="{ active: proteinMode === 'cartoon' }" @click="setProteinMode('cartoon')">{{ $t('卡通') }}</el-button>
+                <el-button size="small" text class="control-btn" :class="{ active: proteinMode === 'surface' }" @click="setProteinMode('surface')">{{ $t('表面') }}</el-button>
+                <el-button size="small" text class="control-btn" :class="{ active: proteinMode === 'line' }" @click="setProteinMode('line')">{{ $t('线框') }}</el-button>
+                <el-button size="small" text class="control-btn" @click="toggleBox">{{ boxVisible ? $t('隐藏盒子') : $t('显示盒子') }}</el-button>
+                <el-button size="small" text class="control-btn" @click="toggleLigand">{{ ligandVisible ? $t('隐藏配体') : $t('显示配体') }}</el-button>
+                <el-button size="small" text class="control-btn" @click="exportPng">{{ $t('导出PNG') }}</el-button>
+              </div>
+              <div class="controls-group controls-right">
+                <span class="controls-label">{{ $t('盒子快捷操作') }}</span>
+                <el-button v-for="size in [15, 20, 25, 30]" :key="size" size="small" text class="control-btn" @click="applyBoxSize(size)">{{ size }} Å</el-button>
+                <el-button size="small" text class="control-btn" :disabled="!ligandInfo?.centroid" @click="centerToLigand">{{ $t('居中到配体') }}</el-button>
+                <el-button size="small" text class="control-btn" :disabled="!receptorInfo" @click="centerToProtein">{{ $t('居中到蛋白') }}</el-button>
+                <el-button size="small" text class="control-btn" :disabled="!lastPocketBox" @click="centerToPocket">{{ $t('对齐到预测口袋') }}</el-button>
+              </div>
+              <div class="controls-info">{{ previewInfoText }}</div>
+            </div>
+          </div>
           <el-alert
             v-if="!mergeReady"
             :title="$t('请先在左侧完成配体与受体输入')"
@@ -209,6 +233,12 @@ const templateName = ref('')
 const autoPocketLoading = ref(false)
 const ligandUpload = ref(null)
 const receptorUpload = ref(null)
+const previewViewer = ref(null)
+const boxVisible = ref(true)
+const ligandVisible = ref(true)
+const proteinMode = ref('cartoon')
+const lastPocketBox = ref(null)
+const residueCount = ref(null)
 
 const ligandInfo = ref(null)
 const receptorInfo = ref(null)
@@ -237,6 +267,21 @@ const box3d = computed(() => ({
 }))
 
 const mergeReady = computed(() => Boolean(ligandInfo.value && receptorInfo.value))
+
+const previewInfoText = computed(() => {
+  if (!mergeReady.value) {
+    return t('请先在左侧完成配体与受体输入')
+  }
+  const parts = []
+  if (receptorInfo.value) {
+    parts.push(`${t('受体')} ${receptorLabel.value || '-'} · ${t('残基数')} ${residueCount.value ?? '-'} · ${t('原子数')} ${receptorInfo.value.atom_count_after ?? '-'}`)
+  }
+  if (ligandInfo.value) {
+    parts.push(`${t('配体')} ${ligandLabel.value || ligandInfo.value.name || '-'} · ${t('分子量')} ${ligandInfo.value.properties?.molecular_weight ?? '-'}`)
+  }
+  parts.push(`${t('盒子中心')} (${box3d.value.center.x}, ${box3d.value.center.y}, ${box3d.value.center.z}) · ${t('尺寸')} (${box3d.value.size.x}, ${box3d.value.size.y}, ${box3d.value.size.z}) Å`)
+  return parts.join(' · ')
+})
 
 onMounted(async () => {
   await settings.loadEngines()
@@ -313,6 +358,7 @@ function applyReceptor(result, label) {
   receptorInfo.value = result.receptor
   receptorLabel.value = label
   activeTab.value = 'receptor'
+  loadReceptorMeta(result.receptor.pdbqt)
 }
 
 function clearLigand() {
@@ -346,6 +392,124 @@ function onCanvasBoxChange({ center, size }) {
   })
 }
 
+async function loadReceptorMeta(path) {
+  if (!path) {
+    residueCount.value = null
+    return
+  }
+  try {
+    const response = await fetch(previewUrl(path))
+    const text = await response.text()
+    const residues = new Set()
+    for (const line of text.split(/\r?\n/)) {
+      if (line.startsWith('ATOM') || line.startsWith('HETATM')) {
+        residues.add(`${line.slice(21, 22)}:${line.slice(22, 26).trim()}`)
+      }
+    }
+    residueCount.value = residues.size || null
+  } catch {
+    residueCount.value = null
+  }
+}
+
+async function readCentroid(path) {
+  if (!path) return null
+  try {
+    const response = await fetch(previewUrl(path))
+    const text = await response.text()
+    const xs = []
+    const ys = []
+    const zs = []
+    for (const line of text.split(/\r?\n/)) {
+      if (line.startsWith('ATOM') || line.startsWith('HETATM')) {
+        const x = Number(line.slice(30, 38))
+        const y = Number(line.slice(38, 46))
+        const z = Number(line.slice(46, 54))
+        if (Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z)) {
+          xs.push(x)
+          ys.push(y)
+          zs.push(z)
+        }
+      }
+    }
+    if (!xs.length) return null
+    return {
+      x: xs.reduce((a, b) => a + b, 0) / xs.length,
+      y: ys.reduce((a, b) => a + b, 0) / ys.length,
+      z: zs.reduce((a, b) => a + b, 0) / zs.length
+    }
+  } catch {
+    return null
+  }
+}
+
+function resetView() {
+  previewViewer.value?.resetView()
+}
+
+function centerView() {
+  previewViewer.value?.centerView()
+}
+
+function setProteinMode(mode) {
+  proteinMode.value = mode
+  previewViewer.value?.setProteinMode(mode)
+}
+
+function toggleBox() {
+  boxVisible.value = !boxVisible.value
+  previewViewer.value?.toggleBox(boxVisible.value)
+}
+
+function toggleLigand() {
+  ligandVisible.value = !ligandVisible.value
+  previewViewer.value?.toggleLigand(ligandVisible.value)
+}
+
+function exportPng() {
+  previewViewer.value?.exportPng()
+}
+
+function applyBoxSize(size) {
+  dock.setBox({
+    center: {
+      x: dock.params.center_x,
+      y: dock.params.center_y,
+      z: dock.params.center_z
+    },
+    size: { x: size, y: size, z: size }
+  })
+}
+
+function centerToLigand() {
+  if (ligandInfo.value?.centroid) {
+    dock.setCenter(ligandInfo.value.centroid)
+  }
+}
+
+async function centerToProtein() {
+  const centroid = await readCentroid(receptorInfo.value?.pdbqt)
+  if (centroid) {
+    dock.setCenter(centroid)
+  }
+}
+
+function centerToPocket() {
+  if (!lastPocketBox.value) return
+  dock.setBox({
+    center: {
+      x: lastPocketBox.value.center_x,
+      y: lastPocketBox.value.center_y,
+      z: lastPocketBox.value.center_z
+    },
+    size: {
+      x: lastPocketBox.value.size_x,
+      y: lastPocketBox.value.size_y,
+      z: lastPocketBox.value.size_z
+    }
+  })
+}
+
 async function predictPocket() {
   if (!ligandInfo.value?.pdbqt_path || !receptorInfo.value?.pdbqt) {
     ElMessage.warning(t('请先完成配体与受体输入'))
@@ -359,6 +523,7 @@ async function predictPocket() {
       padding: 6
     })
     dock.applyPocket(box)
+    lastPocketBox.value = box
     const methodLabel = {
       fpocket: t('FPocket 口袋扫描'),
       geometry_cavity: t('蛋白空腔识别'),
@@ -392,6 +557,14 @@ function resetAll() {
   pdbId.value = ''
   autoPocketLoading.value = false
   taskId.value = ''
+  lastPocketBox.value = null
+  residueCount.value = null
+  boxVisible.value = true
+  ligandVisible.value = true
+  proteinMode.value = 'cartoon'
+  previewViewer.value?.toggleBox(true)
+  previewViewer.value?.toggleLigand(true)
+  previewViewer.value?.setProteinMode('cartoon')
   ligandUpload.value?.clear()
   receptorUpload.value?.clear()
   stop()
@@ -472,7 +645,7 @@ async function saveTemplate() {
 <style scoped>
 .home-grid {
   display: grid;
-  grid-template-columns: minmax(430px, 520px) 1fr;
+  grid-template-columns: minmax(480px, 560px) 1fr;
   gap: 14px;
   align-items: start;
 }
@@ -546,6 +719,82 @@ async function saveTemplate() {
 
 .preview-guide:hover {
   opacity: 1;
+}
+
+.preview-stage {
+  position: relative;
+}
+
+.preview-controls {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  z-index: 6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(13, 21, 38, 0.78);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+  opacity: 0.7;
+  transition: opacity 0.2s ease-out;
+}
+
+.preview-stage:hover .preview-controls {
+  opacity: 1;
+}
+
+.controls-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.controls-right {
+  margin-left: auto;
+}
+
+.controls-label {
+  margin-right: 4px;
+  font-size: 11px;
+  color: var(--cadd-muted);
+}
+
+.control-btn {
+  height: auto;
+  margin: 0;
+  padding: 3px 7px;
+  color: var(--cadd-muted);
+}
+
+.preview-controls .el-button + .el-button {
+  margin-left: 2px;
+}
+
+.control-btn:hover {
+  color: var(--cadd-ink);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.control-btn.active {
+  color: #60A5FA;
+  background: rgba(59, 130, 246, 0.14);
+}
+
+.controls-info {
+  width: 100%;
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--cadd-muted);
 }
 
 .box-summary {

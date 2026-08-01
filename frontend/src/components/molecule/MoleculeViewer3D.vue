@@ -6,7 +6,7 @@
     :style="{ height }"
   >
     <BoxDrag
-      v-if="interactive && hasBox"
+      v-if="interactive && hasBox && boxVisible"
       ref="boxDragRef"
       :box="props.box"
       :projector="projector"
@@ -50,11 +50,14 @@ const EDGE_PAIRS = [
 const container = ref(null)
 const boxDragRef = ref(null)
 const projector = ref(null)
+const boxVisible = ref(true)
 
 let viewer = null
 let renderSeq = 0
 let draggingBox = false
 let resizeObserver = null
+let proteinModels = []
+let ligandModels = []
 
 const hasBox = computed(() => Boolean(props.box && props.box.size))
 
@@ -97,7 +100,13 @@ function refreshBoxDrag() {
 }
 
 function updateBoxShapes() {
-  if (!viewer || !hasBox.value) return
+  if (!viewer) return
+  if (!hasBox.value || !boxVisible.value) {
+    viewer.removeAllShapes()
+    viewer.render()
+    refreshBoxDrag()
+    return
+  }
   const box = normalizeBox(props.box)
   viewer.removeAllShapes()
   viewer.addBox({
@@ -129,8 +138,22 @@ function inferFormat(url) {
 
 function styleFor(kind) {
   if (kind === 'protein') {
-    return { cartoon: { color: 'spectrum' } }
+    return proteinStyle('cartoon')
   }
+  return ligandStyle()
+}
+
+function proteinStyle(mode) {
+  if (mode === 'surface') {
+    return { surface: { opacity: 0.72, colorscheme: 'spectrum' } }
+  }
+  if (mode === 'line') {
+    return { line: { colorscheme: 'Jmol', linewidth: 1.5 } }
+  }
+  return { cartoon: { color: 'spectrum' } }
+}
+
+function ligandStyle() {
   return {
     stick: { radius: 0.2, colorscheme: 'Jmol' },
     sphere: { scale: 0.22, colorscheme: 'Jmol' }
@@ -142,6 +165,8 @@ async function loadModels() {
   const seq = ++renderSeq
   viewer.removeAllModels()
   viewer.removeAllShapes()
+  proteinModels = []
+  ligandModels = []
   try {
     let modelIndex = 0
     for (const file of props.files) {
@@ -152,6 +177,11 @@ async function loadModels() {
       if (!text.trim()) continue
       viewer.addModel(text, inferFormat(file.url))
       viewer.setStyle({ model: modelIndex }, styleFor(file.style || 'ligand'))
+      if (file.style === 'protein') {
+        proteinModels.push(modelIndex)
+      } else {
+        ligandModels.push(modelIndex)
+      }
       modelIndex += 1
     }
     if (props.files.length) {
@@ -180,6 +210,53 @@ function onDragStart() {
 function onDragEnd() {
   draggingBox = false
   updateBoxShapes()
+}
+
+function resetView() {
+  if (!viewer) return
+  try {
+    viewer.zoomTo()
+  } catch {
+    // 空场景时保持默认相机
+  }
+  viewer.render()
+}
+
+function centerView() {
+  resetView()
+}
+
+function setProteinMode(mode) {
+  if (!viewer) return
+  const style = proteinStyle(mode)
+  proteinModels.forEach((index) => {
+    viewer.setStyle({ model: index }, style)
+  })
+  viewer.render()
+}
+
+function toggleBox(visible) {
+  boxVisible.value = visible
+  updateBoxShapes()
+}
+
+function toggleLigand(visible) {
+  if (!viewer) return
+  const style = visible ? ligandStyle() : {}
+  ligandModels.forEach((index) => {
+    viewer.setStyle({ model: index }, style)
+  })
+  viewer.render()
+}
+
+function exportPng() {
+  if (!viewer) return
+  const uri = viewer.pngURI()
+  if (!uri) return
+  const link = document.createElement('a')
+  link.href = uri
+  link.download = 'docklab-preview.png'
+  link.click()
 }
 
 watch(
@@ -236,7 +313,15 @@ onBeforeUnmount(() => {
   }
 })
 
-defineExpose({ render: loadModels })
+defineExpose({
+  render: loadModels,
+  resetView,
+  centerView,
+  setProteinMode,
+  toggleBox,
+  toggleLigand,
+  exportPng
+})
 </script>
 
 <style scoped>
