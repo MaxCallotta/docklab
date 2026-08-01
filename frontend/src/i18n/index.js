@@ -24,7 +24,10 @@ const messages = {
     '已生成：{path}': '已生成：{path}',
     'PML 已生成：{path}': 'PML 已生成：{path}',
     '已唤起本地 PyMOL（进程 {pid}）': '已唤起本地 PyMOL（进程 {pid}）',
-    '无法加载结构：{url}': '无法加载结构：{url}'
+    '无法加载结构：{url}': '无法加载结构：{url}',
+    '拖拽已自动限制在合理范围：中心 ±2000 Å，尺寸 1–200 Å': '拖拽已自动限制在合理范围：中心 ±2000 Å，尺寸 1–200 Å',
+    '拖拽盒体移动中心': '拖拽盒体移动中心',
+    '拖拽顶点调整盒子尺寸': '拖拽顶点调整盒子尺寸'
   },
   en: {
     '排队中': 'Queued',
@@ -234,6 +237,9 @@ const messages = {
     '已唤起本地 PyMOL（进程 {pid}）': 'Local PyMOL launched (PID {pid})',
     '无法加载结构：{url}': 'Unable to load structure: {url}',
     '预览加载失败': 'Failed to load 3D preview',
+    '拖拽已自动限制在合理范围：中心 ±2000 Å，尺寸 1–200 Å': 'Dragging is automatically limited to the valid range: center ±2000 Å, size 1–200 Å',
+    '拖拽盒体移动中心': 'Drag the box body to move the center',
+    '拖拽顶点调整盒子尺寸': 'Drag a vertex to resize the box',
     '网络请求失败，请检查后端服务': 'Network request failed. Please check the backend service.'
   }
 }

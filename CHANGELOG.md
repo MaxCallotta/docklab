@@ -44,6 +44,8 @@
   - 文件：frontend/src/styles/index.css、frontend/src/App.vue、frontend/src/components/molecule/MoleculeViewer3D.vue
 - 深空轻奢视觉细化：玻璃拟态卡片、渐变按钮、圆角输入、Tab/下拉动效、3D 盒子呼吸光效
   - 文件：frontend/src/styles/index.css、frontend/src/components/molecule/BoxDrag.vue、frontend/src/views/HomeView.vue
+- 补充英文提示翻译：盒子拖拽边界限制、顶点调整尺寸、盒体移动提示
+  - 文件：frontend/src/i18n/index.js
 
 ### 修改
 - 移除代码与文档中的本机硬编码路径，数据目录默认为用户级目录
