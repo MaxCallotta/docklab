@@ -46,6 +46,8 @@
   - 文件：frontend/src/styles/index.css、frontend/src/components/molecule/BoxDrag.vue、frontend/src/views/HomeView.vue
 - 补充英文提示翻译：盒子拖拽边界限制、顶点调整尺寸、盒体移动提示
   - 文件：frontend/src/i18n/index.js
+- 新增后端消息英文翻译器，覆盖预处理、对接、PDB、任务、引擎等提示
+  - 文件：frontend/src/utils/backendMessages.js、frontend/src/api/http.js、frontend/src/views/HomeView.vue、frontend/src/views/ResultView.vue
 
 ### 修改
 - 移除代码与文档中的本机硬编码路径，数据目录默认为用户级目录

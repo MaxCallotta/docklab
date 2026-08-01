@@ -190,6 +190,7 @@ import {
   RECEPTOR_ACCEPT,
   RECEPTOR_EXTENSIONS
 } from '../utils/constants'
+import { translateBackendMessage } from '../utils/backendMessages'
 import { validateBox, validatePdbId, validateSmiles } from '../utils/validators'
 
 const router = useRouter()
@@ -256,7 +257,7 @@ function setLigandFromResponse(result, label) {
   }
   const warnings = [...(result.warnings || []), ...(ligand.warnings || [])]
   if (warnings.length) {
-    ElMessage.warning(warnings[0])
+    ElMessage.warning(translateBackendMessage(warnings[0]))
   }
   activeTab.value = 'ligand'
 }
@@ -366,9 +367,10 @@ async function predictPocket() {
     if (box.method === 'protein_center') {
       ElMessage.warning(t('未识别明显结合口袋，已加载蛋白中心默认盒子，可手动拖拽调整'))
     } else if (box.warnings?.length) {
+      const warning = translateBackendMessage(box.warnings[0])
       ElMessage.warning(t('口袋盒子已生成（{method}）：{warning}', {
         method: methodLabel,
-        warning: box.warnings[0]
+        warning
       }))
     } else {
       ElMessage.success(t('口袋盒子已生成', { method: methodLabel }))

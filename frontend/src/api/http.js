@@ -1,12 +1,13 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import i18n from '../i18n'
+import { translateBackendMessage } from '../utils/backendMessages'
 
 function localize(message) {
   if (message && i18n.global.te(message)) {
     return i18n.global.t(message)
   }
-  return message
+  return translateBackendMessage(message)
 }
 
 // 统一 axios 实例：后端返回 {code,message,data} 时自动解包 data

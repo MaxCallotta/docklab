@@ -23,7 +23,7 @@
       type="error"
       :closable="false"
       show-icon
-      :title="task?.error_message || $t('任务执行失败')"
+      :title="errorTitle"
       class="fail-alert"
     />
 
@@ -87,6 +87,7 @@ import { useTaskPolling } from '../composables/useTaskPolling'
 import { exportPose, poseUrl, taskFileUrl } from '../api/task'
 import { previewUrl } from '../api/molecule'
 import { generatePml, openPymol } from '../api/visualization'
+import { translateBackendMessage } from '../utils/backendMessages'
 import { formatAffinity } from '../utils/formatters'
 
 const route = useRoute()
@@ -98,6 +99,11 @@ const { task, status, progress, start } = useTaskPolling(taskIdRef)
 const currentPose = ref(1)
 
 const poses = computed(() => task.value?.result_summary?.poses || [])
+const errorTitle = computed(() => (
+  task.value?.error_message
+    ? translateBackendMessage(task.value.error_message)
+    : t('任务执行失败')
+))
 
 const previewFiles = computed(() => {
   const files = []
