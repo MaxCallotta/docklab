@@ -5,16 +5,16 @@
       <section class="col-left">
         <div class="left-stack">
           <div class="upload-block">
-            <SectionPanel title="分子输入">
+            <SectionPanel :title="$t('分子输入')">
               <el-tabs v-model="activeTab">
-                <el-tab-pane label="配体" name="ligand">
+                <el-tab-pane :label="$t('配体')" name="ligand">
                   <el-tabs v-model="ligandMode" size="small">
-                    <el-tab-pane label="上传配体文件" name="upload">
+                    <el-tab-pane :label="$t('上传配体文件')" name="upload">
                       <FileUpload
                         ref="ligandUpload"
                         :accept="LIGAND_ACCEPT"
                         :extensions="LIGAND_EXTENSIONS"
-                        hint="上传 cdxml / sdf / mol / mol2 / smi 配体文件"
+                        :hint="$t('上传 cdxml / sdf / mol / mol2 / smi 配体文件')"
                         @change="onLigandFile"
                         @clear="clearLigand"
                       />
@@ -24,7 +24,7 @@
                         v-model="smiles"
                         type="textarea"
                         :rows="3"
-                        placeholder="例如：CCO（乙醇）"
+                        :placeholder="$t('例如：CCO（乙醇）')"
                       />
                       <el-button
                         class="smiles-btn"
@@ -33,26 +33,26 @@
                         :loading="preparing"
                         @click="generateFromSmiles"
                       >
-                        生成配体
+                        {{ $t('生成配体') }}
                       </el-button>
                     </el-tab-pane>
                   </el-tabs>
                 </el-tab-pane>
-                <el-tab-pane label="受体" name="receptor">
+                <el-tab-pane :label="$t('受体')" name="receptor">
                   <div class="pdb-row">
                     <el-input
                       v-model="pdbId"
-                      placeholder="PDB ID，例如 1CRN"
+                      :placeholder="$t('例如 1CRN')"
                       @keyup.enter="fetchPdb"
                     />
-                    <el-button :loading="preparing" @click="fetchPdb">拉取 PDB</el-button>
+                    <el-button :loading="preparing" @click="fetchPdb">{{ $t('拉取 PDB') }}</el-button>
                   </div>
-                  <el-divider content-position="center">或</el-divider>
+                  <el-divider content-position="center">{{ $t('或') }}</el-divider>
                   <FileUpload
                     ref="receptorUpload"
                     :accept="RECEPTOR_ACCEPT"
                     :extensions="RECEPTOR_EXTENSIONS"
-                    hint="上传本地受体 PDB / PDBQT 文件"
+                    :hint="$t('上传本地受体 PDB / PDBQT 文件')"
                     @change="onReceptorFile"
                     @clear="clearReceptor"
                   />
@@ -62,15 +62,17 @@
               <div v-if="ligandInfo" class="ligand-meta">
                 <div>SMILES：<span class="mono">{{ ligandInfo.smiles || '-' }}</span></div>
                 <div>
-                  属性：MW {{ ligandInfo.properties?.molecular_weight ?? '-' }}，
-                  可旋转键 {{ ligandInfo.properties?.rotatable_bonds ?? '-' }}
+                  {{ $t('属性：MW {weight}，可旋转键 {bonds}', {
+                    weight: ligandInfo.properties?.molecular_weight ?? '-',
+                    bonds: ligandInfo.properties?.rotatable_bonds ?? '-'
+                  }) }}
                 </div>
               </div>
             </SectionPanel>
           </div>
 
           <div class="box-block">
-            <SectionPanel title="对接盒子与计算参数">
+            <SectionPanel :title="$t('对接盒子与计算参数')">
               <el-form label-width="118px">
                 <EngineSelect v-model="dock.params.engine_id" :engines="settings.engines" />
               </el-form>
@@ -86,7 +88,7 @@
               <EngineParamsPanel v-model="dock.params" />
 
               <div class="box-canvas-wrap">
-                <div class="box-canvas-title muted">对接盒子三维线框（仅本区域渲染）</div>
+                <div class="box-canvas-title muted">{{ $t('对接盒子三维线框（仅本区域渲染）') }}</div>
                 <MoleculeViewer3D :files="[]" :box="box3d" height="260px" :interactive="false" />
               </div>
             </SectionPanel>
@@ -96,9 +98,9 @@
 
       <!-- 右栏：分子合并预览 -->
       <section class="col-right">
-        <SectionPanel title="蛋白 + 配体合并预览">
+        <SectionPanel :title="$t('蛋白 + 配体合并预览')">
           <div class="preview-guide muted">
-            可拖拽立方体调整对接盒子，或点击左侧自动生成口袋快速获取最优结合位点
+            {{ $t('可拖拽立方体调整对接盒子，或点击左侧自动生成口袋快速获取最优结合位点') }}
           </div>
           <MoleculeViewer3D
             :files="mergeFiles"
@@ -109,15 +111,23 @@
           />
           <el-alert
             v-if="!mergeReady"
-            title="请先在左侧完成配体与受体输入"
+            :title="$t('请先在左侧完成配体与受体输入')"
             type="info"
             :closable="false"
             show-icon
             class="merge-alert"
           />
           <div class="box-summary muted">
-            盒子中心 ({{ box3d.center.x }}, {{ box3d.center.y }}, {{ box3d.center.z }})，
-            尺寸 ({{ box3d.size.x }}, {{ box3d.size.y }}, {{ box3d.size.z }}) Å
+            {{ $t('盒子中心 ({x}, {y}, {z})', {
+              x: box3d.center.x,
+              y: box3d.center.y,
+              z: box3d.center.z
+            }) }}，
+            {{ $t('尺寸 ({x}, {y}, {z})', {
+              x: box3d.size.x,
+              y: box3d.size.y,
+              z: box3d.size.z
+            }) }} Å
           </div>
         </SectionPanel>
       </section>
@@ -134,22 +144,22 @@
         <span class="muted">{{ statusLabel }}</span>
       </div>
       <div class="action-buttons">
-        <el-button type="primary" :loading="submitting" @click="submitTask">提交任务</el-button>
-        <el-button @click="resetAll">重置参数</el-button>
-        <el-button @click="templateDialog = true">保存参数模板</el-button>
+        <el-button type="primary" :loading="submitting" @click="submitTask">{{ $t('提交任务') }}</el-button>
+        <el-button @click="resetAll">{{ $t('重置参数') }}</el-button>
+        <el-button @click="templateDialog = true">{{ $t('保存参数模板') }}</el-button>
       </div>
     </div>
 
-    <el-dialog v-model="templateDialog" title="保存参数模板" width="420px">
+    <el-dialog v-model="templateDialog" :title="$t('保存参数模板')" width="420px">
       <el-form label-width="80px">
-        <el-form-item label="模板名称" required>
-          <el-input v-model="templateName" placeholder="例如：激酶口袋-默认盒子" />
+        <el-form-item :label="$t('模板名称')" required>
+          <el-input v-model="templateName" :placeholder="$t('例如：激酶口袋-默认盒子')" />
         </el-form-item>
-        <div class="muted">将保存当前引擎、盒子与计算参数，便于后续复用。</div>
+        <div class="muted">{{ $t('将保存当前引擎、盒子与计算参数，便于后续复用。') }}</div>
       </el-form>
       <template #footer>
-        <el-button @click="templateDialog = false">取消</el-button>
-        <el-button type="primary" :loading="savingTemplate" @click="saveTemplate">保存</el-button>
+        <el-button @click="templateDialog = false">{{ $t('取消') }}</el-button>
+        <el-button type="primary" :loading="savingTemplate" @click="saveTemplate">{{ $t('保存') }}</el-button>
       </template>
     </el-dialog>
   </div>
@@ -159,6 +169,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 
 import SectionPanel from '../components/common/SectionPanel.vue'
 import FileUpload from '../components/common/FileUpload.vue'
@@ -183,6 +194,7 @@ import { validateBox, validatePdbId, validateSmiles } from '../utils/validators'
 
 const router = useRouter()
 const settings = useSettingsStore()
+const { t } = useI18n()
 
 const activeTab = ref('ligand')
 const ligandMode = ref('upload')
@@ -230,7 +242,7 @@ onMounted(async () => {
   if (settings.loadedParams) {
     dock.applyLoadedParams(settings.loadedParams)
     settings.loadedParams = null
-    ElMessage.success('已加载参数模板')
+    ElMessage.success(t('已加载参数模板'))
   }
 })
 
@@ -315,7 +327,7 @@ function clearReceptor() {
 function applyCentroid() {
   if (!ligandInfo.value?.centroid) return
   dock.setCenter(ligandInfo.value.centroid)
-  ElMessage.success('盒子中心已设为配体质心')
+    ElMessage.success(t('盒子中心已设为配体质心'))
 }
 
 function onCanvasBoxChange({ center, size }) {
@@ -335,7 +347,7 @@ function onCanvasBoxChange({ center, size }) {
 
 async function predictPocket() {
   if (!ligandInfo.value?.pdbqt_path || !receptorInfo.value?.pdbqt) {
-    ElMessage.warning('请先完成配体与受体输入')
+    ElMessage.warning(t('请先完成配体与受体输入'))
     return
   }
   autoPocketLoading.value = true
@@ -347,16 +359,19 @@ async function predictPocket() {
     })
     dock.applyPocket(box)
     const methodLabel = {
-      fpocket: 'FPocket 口袋扫描',
-      geometry_cavity: '蛋白空腔识别',
-      protein_center: '蛋白几何中心兜底'
-    }[box.method] || '口袋预测'
+      fpocket: t('FPocket 口袋扫描'),
+      geometry_cavity: t('蛋白空腔识别'),
+      protein_center: t('蛋白几何中心兜底')
+    }[box.method] || t('口袋预测')
     if (box.method === 'protein_center') {
-      ElMessage.warning('未识别明显结合口袋，已加载蛋白中心默认盒子，可手动拖拽调整')
+      ElMessage.warning(t('未识别明显结合口袋，已加载蛋白中心默认盒子，可手动拖拽调整'))
     } else if (box.warnings?.length) {
-      ElMessage.warning(`口袋盒子已生成（${methodLabel}）：${box.warnings[0]}`)
+      ElMessage.warning(t('口袋盒子已生成（{method}）：{warning}', {
+        method: methodLabel,
+        warning: box.warnings[0]
+      }))
     } else {
-      ElMessage.success(`口袋盒子已生成（${methodLabel}）`)
+      ElMessage.success(t('口袋盒子已生成', { method: methodLabel }))
     }
   } catch {
     // 统一错误提示已由 http 拦截器处理
@@ -382,11 +397,11 @@ function resetAll() {
 
 async function submitTask() {
   if (!ligandInfo.value?.pdbqt_path) {
-    ElMessage.warning('请先上传配体文件或输入 SMILES 生成配体')
+    ElMessage.warning(t('请先上传配体文件或输入 SMILES 生成配体'))
     return
   }
   if (!receptorInfo.value?.pdbqt) {
-    ElMessage.warning('请先输入 PDB ID 或上传受体 PDB 文件')
+    ElMessage.warning(t('请先输入 PDB ID 或上传受体 PDB 文件'))
     return
   }
   if (!validateBox(dock.params)) return
@@ -437,7 +452,7 @@ async function submitTask() {
 
 async function saveTemplate() {
   if (!templateName.value.trim()) {
-    ElMessage.warning('请输入模板名称')
+    ElMessage.warning(t('请输入模板名称'))
     return
   }
   savingTemplate.value = true
@@ -445,7 +460,7 @@ async function saveTemplate() {
     await saveTemplateApi({ name: templateName.value.trim(), params: { ...dock.params } })
     templateDialog.value = false
     templateName.value = ''
-    ElMessage.success('参数模板已保存')
+    ElMessage.success(t('参数模板已保存'))
   } finally {
     savingTemplate.value = false
   }

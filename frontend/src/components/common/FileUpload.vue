@@ -13,7 +13,9 @@
     >
       <div class="upload-hint">
         <div class="upload-main">{{ hint }}</div>
-        <div class="upload-sub">支持：{{ accept }}，最大 {{ maxSizeMB }} MB</div>
+        <div class="upload-sub">
+          {{ $t('支持：{accept}，最大 {max} MB', { accept, max: maxSizeMB }) }}
+        </div>
       </div>
     </el-upload>
   </div>
@@ -22,7 +24,10 @@
 <script setup>
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { validateUploadFile } from '../../utils/validators'
+
+const { t } = useI18n()
 
 const props = defineProps({
   accept: { type: String, default: '.cdxml' },
@@ -66,7 +71,7 @@ function clear() {
 
 function handleRemove() {
   clear()
-  ElMessage.info('已移除文件')
+  ElMessage.info(t('已移除文件'))
 }
 
 defineExpose({ clear })

@@ -5,10 +5,10 @@
     highlight-current-row
     :row-class-name="rowClassName"
     @row-click="handleRowClick"
-    empty-text="暂无打分数据"
+    :empty-text="$t('暂无打分数据')"
     size="default"
   >
-    <el-table-column label="最优" width="70" align="center">
+    <el-table-column :label="$t('最优')" width="70" align="center">
       <template #default="{ row }">
         <el-radio
           :model-value="currentIndex"
@@ -17,10 +17,10 @@
         />
       </template>
     </el-table-column>
-    <el-table-column prop="index" label="构象" width="80" sortable align="center" />
+    <el-table-column prop="index" :label="$t('构象')" width="80" sortable align="center" />
     <el-table-column
       prop="affinity"
-      label="结合自由能 (kcal/mol)"
+      :label="$t('结合自由能 (kcal/mol)')"
       width="180"
       sortable
       align="right"

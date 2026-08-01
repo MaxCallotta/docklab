@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import i18n from '../i18n'
 
 const routes = [
   {
@@ -39,7 +40,9 @@ const router = createRouter({
 })
 
 router.afterEach((to) => {
-  document.title = `${to.meta.title || '平台'} | CADD 分子对接平台`
+  const pageTitle = i18n.global.t(to.meta.title || '平台')
+  const brandTitle = i18n.global.t('CADD 分子对接平台')
+  document.title = `${pageTitle} | ${brandTitle}`
 })
 
 export default router

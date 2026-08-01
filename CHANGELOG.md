@@ -38,6 +38,8 @@
   - 文件：backend/app/core/exceptions.py
 - 中英双语项目 README
   - 文件：README.md、README.en.md
+- 前端中英文界面切换与 i18n 语言包
+  - 文件：frontend/src/i18n/index.js、frontend/src/components/layout/AppLayout.vue
 
 ### 修改
 - 移除代码与文档中的本机硬编码路径，数据目录默认为用户级目录

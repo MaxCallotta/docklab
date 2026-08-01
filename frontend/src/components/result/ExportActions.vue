@@ -5,19 +5,19 @@
     </el-select>
     <el-button type="primary" :disabled="disabled" @click="$emit('export-pose', format)">
       <el-icon><Download /></el-icon>
-      导出选中构象
+      {{ $t('导出选中构象') }}
     </el-button>
     <el-button :disabled="disabled" @click="$emit('generate-pml')">
       <el-icon><MagicStick /></el-icon>
-      生成 PML 脚本
+      {{ $t('生成 PML 脚本') }}
     </el-button>
     <el-button :disabled="disabled" @click="$emit('open-pymol')">
       <el-icon><Monitor /></el-icon>
-      唤起本地 PyMOL
+      {{ $t('唤起本地 PyMOL') }}
     </el-button>
     <el-button :disabled="disabled" @click="$emit('export-csv')">
       <el-icon><Document /></el-icon>
-      导出打分 CSV
+      {{ $t('导出打分 CSV') }}
     </el-button>
   </div>
 </template>

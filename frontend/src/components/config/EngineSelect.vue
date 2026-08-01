@@ -1,6 +1,6 @@
 <template>
-  <el-form-item label="对接引擎" required>
-    <el-select v-model="engineId" placeholder="选择对接软件" style="width: 100%">
+  <el-form-item :label="$t('对接引擎')" required>
+    <el-select v-model="engineId" :placeholder="$t('选择对接软件')" style="width: 100%">
       <el-option
         v-for="engine in engines"
         :key="engine.engine_id"
@@ -15,11 +15,11 @@
           effect="plain"
           style="margin-left: 8px"
         >
-          {{ engine.available ? '可用' : '未配置' }}
+          {{ engine.available ? $t('可用') : $t('未配置') }}
         </el-tag>
       </el-option>
     </el-select>
-    <div class="muted engine-hint">预留 Glide / MOE / LeDock / rDock 扩展</div>
+    <div class="muted engine-hint">{{ $t('预留 Glide / MOE / LeDock / rDock 扩展') }}</div>
   </el-form-item>
 </template>
 

@@ -2,18 +2,18 @@
   <div class="page-shell">
     <div class="list-toolbar">
       <div>
-        <h2 class="page-title">任务队列与历史</h2>
-        <div class="muted">全部任务记录保存在本地磁盘，支持重启失败任务与打包下载</div>
+        <h2 class="page-title">{{ $t('任务队列与历史') }}</h2>
+        <div class="muted">{{ $t('全部任务记录保存在本地磁盘，支持重启失败任务与打包下载') }}</div>
       </div>
       <div class="toolbar-right">
-        <el-select v-model="statusFilter" placeholder="全部状态" clearable style="width: 130px" @change="reload">
-          <el-option label="排队中" value="queued" />
-          <el-option label="运行中" value="running" />
-          <el-option label="已完成" value="completed" />
-          <el-option label="失败" value="failed" />
+        <el-select v-model="statusFilter" :placeholder="$t('全部状态')" clearable style="width: 130px" @change="reload">
+          <el-option :label="$t('排队中')" value="queued" />
+          <el-option :label="$t('运行中')" value="running" />
+          <el-option :label="$t('已完成')" value="completed" />
+          <el-option :label="$t('失败')" value="failed" />
         </el-select>
-        <el-button type="primary" plain :loading="store.loading" @click="reload">刷新</el-button>
-        <el-button :disabled="!selectedRows.length" @click="batchDelete">批量删除</el-button>
+        <el-button type="primary" plain :loading="store.loading" @click="reload">{{ $t('刷新') }}</el-button>
+        <el-button :disabled="!selectedRows.length" @click="batchDelete">{{ $t('批量删除') }}</el-button>
       </div>
     </div>
 
@@ -22,51 +22,51 @@
         :data="store.tasks"
         v-loading="store.loading"
         @selection-change="(rows) => (selectedRows = rows)"
-        empty-text="暂无本地任务"
+        :empty-text="$t('暂无本地任务')"
       >
         <el-table-column type="selection" width="46" />
-        <el-table-column label="任务 ID" width="110">
+        <el-table-column :label="$t('任务 ID')" width="110">
           <template #default="{ row }">
             <span class="mono task-id" :title="row.task_id">{{ row.task_id.slice(0, 8) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="任务名称" min-width="170" show-overflow-tooltip />
-        <el-table-column label="配体文件" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="name" :label="$t('任务名称')" min-width="170" show-overflow-tooltip />
+        <el-table-column :label="$t('配体文件')" min-width="150" show-overflow-tooltip>
           <template #default="{ row }">
             {{ ligandName(row) }}
           </template>
         </el-table-column>
-        <el-table-column label="PDB 编号" width="100">
+        <el-table-column :label="$t('PDB 编号')" width="100">
           <template #default="{ row }">
             {{ pdbIdOf(row) || '-' }}
           </template>
         </el-table-column>
-        <el-table-column label="对接软件" width="130">
+        <el-table-column :label="$t('对接软件')" width="130">
           <template #default="{ row }">
             {{ engineName(row.engine_id) }}
           </template>
         </el-table-column>
-        <el-table-column label="状态" width="100">
+        <el-table-column :label="$t('状态')" width="100">
           <template #default="{ row }">
             <StatusTag :status="row.status" />
           </template>
         </el-table-column>
-        <el-table-column label="总打分" width="130" align="right">
+        <el-table-column :label="$t('总打分')" width="130" align="right">
           <template #default="{ row }">
             {{ formatAffinity(row.result_summary?.best_affinity) }}
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" width="150">
+        <el-table-column :label="$t('创建时间')" width="150">
           <template #default="{ row }">
             {{ formatTime(row.created_at) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="330" fixed="right">
+        <el-table-column :label="$t('操作')" width="330" fixed="right">
           <template #default="{ row }">
-            <el-button size="small" type="primary" link @click="viewResult(row)">查看结果</el-button>
-            <el-button size="small" link @click="rerun(row)">重新运行</el-button>
-            <el-button size="small" link @click="download(row)">打包下载</el-button>
-            <el-button size="small" link type="danger" @click="removeTask(row)">删除</el-button>
+            <el-button size="small" type="primary" link @click="viewResult(row)">{{ $t('查看结果') }}</el-button>
+            <el-button size="small" link @click="rerun(row)">{{ $t('重新运行') }}</el-button>
+            <el-button size="small" link @click="download(row)">{{ $t('打包下载') }}</el-button>
+            <el-button size="small" link type="danger" @click="removeTask(row)">{{ $t('删除') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -78,6 +78,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 
 import StatusTag from '../components/common/StatusTag.vue'
 import { useTaskStore } from '../stores/task'
@@ -89,6 +90,7 @@ import { formatAffinity, formatTime } from '../utils/formatters'
 const router = useRouter()
 const store = useTaskStore()
 const settings = useSettingsStore()
+const { t } = useI18n()
 
 const statusFilter = ref('')
 const selectedRows = ref([])
@@ -118,7 +120,7 @@ function viewResult(row) {
 }
 
 async function rerun(row) {
-  await ElMessageBox.confirm(`确认重新运行任务 ${row.task_id.slice(0, 8)}？`, '重新运行', {
+  await ElMessageBox.confirm(t('确认重新运行任务 {id}？', { id: row.task_id.slice(0, 8) }), t('重新运行'), {
     type: 'warning'
   })
   await restartTask(row.task_id)
@@ -144,7 +146,7 @@ async function rerun(row) {
     })
   }
   await reload()
-  ElMessage.success('任务已重新提交')
+  ElMessage.success(t('任务已重新提交'))
 }
 
 function download(row) {
@@ -152,7 +154,7 @@ function download(row) {
 }
 
 async function removeTask(row) {
-  await ElMessageBox.confirm(`删除任务 ${row.task_id.slice(0, 8)} 及其全部文件？`, '删除任务', {
+  await ElMessageBox.confirm(t('删除任务 {id} 及其全部文件？', { id: row.task_id.slice(0, 8) }), t('删除任务'), {
     type: 'warning'
   })
   await deleteTask(row.task_id)
@@ -160,7 +162,7 @@ async function removeTask(row) {
 }
 
 async function batchDelete() {
-  await ElMessageBox.confirm(`确认批量删除 ${selectedRows.value.length} 个任务？`, '批量删除', {
+  await ElMessageBox.confirm(t('确认批量删除 {count} 个任务？', { count: selectedRows.value.length }), t('批量删除'), {
     type: 'warning'
   })
   await batchDeleteApi(selectedRows.value.map((row) => row.task_id))

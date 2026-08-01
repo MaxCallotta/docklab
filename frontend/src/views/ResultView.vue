@@ -2,11 +2,11 @@
   <div class="page-shell">
     <div class="result-header">
       <div>
-        <h2 class="page-title">对接结果分析</h2>
+        <h2 class="page-title">{{ $t('对接结果分析') }}</h2>
         <div class="muted">
-          任务 {{ taskId }} · <StatusTag :status="status" />
+          {{ $t('任务 {id}', { id: taskId }) }} · <StatusTag :status="status" />
           <span v-if="task?.result_summary?.best_affinity !== undefined && task?.result_summary?.best_affinity !== null">
-            最优打分 {{ formatAffinity(task.result_summary.best_affinity) }}
+            {{ $t('最优打分') }} {{ formatAffinity(task.result_summary.best_affinity) }}
           </span>
         </div>
       </div>
@@ -23,24 +23,27 @@
       type="error"
       :closable="false"
       show-icon
-      :title="task?.error_message || '任务执行失败'"
+      :title="task?.error_message || $t('任务执行失败')"
       class="fail-alert"
     />
 
     <div class="result-grid">
       <section class="viewer-col">
-        <SectionPanel title="对接体系 3D 预览">
+        <SectionPanel :title="$t('对接体系 3D 预览')">
           <MoleculeViewer3D :files="previewFiles" height="600px" />
         </SectionPanel>
-        <SectionPanel title="构象切换">
+        <SectionPanel :title="$t('构象切换')">
           <div class="pose-selector">
-            <span class="muted">当前构象</span>
+            <span class="muted">{{ $t('当前构象') }}</span>
             <el-select v-model="currentPose" style="width: 180px" :disabled="!poses.length">
               <el-option
                 v-for="pose in poses"
                 :key="pose.index"
                 :value="pose.index"
-                :label="`构象 ${pose.index}  (${Number(pose.affinity).toFixed(2)} kcal/mol)`"
+                :label="$t('构象 {index}  ({affinity} kcal/mol)', {
+                  index: pose.index,
+                  affinity: Number(pose.affinity).toFixed(2)
+                })"
               />
             </el-select>
           </div>
@@ -48,14 +51,14 @@
       </section>
 
       <section class="table-col">
-        <SectionPanel title="打分排序表">
+        <SectionPanel :title="$t('打分排序表')">
           <ScoreTable v-model="currentPose" :poses="poses" @select="onPoseSelect" />
           <div class="table-note muted">
-            支持按结合自由能 / RMSD 升序降序排序，点击行或单选切换 3D 构象
+            {{ $t('支持按结合自由能 / RMSD 升序降序排序，点击行或单选切换 3D 构象') }}
           </div>
         </SectionPanel>
 
-        <SectionPanel title="导出与可视化">
+        <SectionPanel :title="$t('导出与可视化')">
           <ExportActions
             :disabled="!poses.length"
             @export-pose="onExportPose"
@@ -73,6 +76,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 
 import SectionPanel from '../components/common/SectionPanel.vue'
 import StatusTag from '../components/common/StatusTag.vue'
@@ -86,6 +90,7 @@ import { generatePml, openPymol } from '../api/visualization'
 import { formatAffinity } from '../utils/formatters'
 
 const route = useRoute()
+const { t } = useI18n()
 const taskId = String(route.params.taskId)
 const taskIdRef = ref(taskId)
 const { task, status, progress, start } = useTaskPolling(taskIdRef)
@@ -128,12 +133,12 @@ async function onExportPose(format) {
 async function onGeneratePml() {
   const best = task.value?.result_summary?.best_affinity
   const result = await generatePml(taskId, best ?? null)
-  ElMessage.success(`PML 已生成：${result.pml_path}`)
+  ElMessage.success(t('PML 已生成：{path}', { path: result.pml_path }))
 }
 
 async function onOpenPymol() {
   const result = await openPymol(taskId)
-  ElMessage.success(`已唤起本地 PyMOL（进程 ${result.pid}）`)
+  ElMessage.success(t('已唤起本地 PyMOL（进程 {pid}）', { pid: result.pid }))
 }
 
 function onExportCsv() {

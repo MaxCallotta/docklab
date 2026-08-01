@@ -48,6 +48,7 @@ DockLab is a local-first molecular docking platform built for drug discovery and
 | Docking engines | AutoDock Vina, AutoDock4/AutoGrid4 extension interface |
 | Result analysis | Multi-pose scoring, RMSD, CSV reports, pose export |
 | Task management | Local persistence, restart, batch delete, archive download |
+| Language | Chinese / English switching, extensible to more languages |
 
 ## Technology Stack
 

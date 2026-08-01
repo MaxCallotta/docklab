@@ -1,5 +1,13 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import i18n from '../i18n'
+
+function localize(message) {
+  if (message && i18n.global.te(message)) {
+    return i18n.global.t(message)
+  }
+  return message
+}
 
 // 统一 axios 实例：后端返回 {code,message,data} 时自动解包 data
 const http = axios.create({
@@ -12,8 +20,9 @@ http.interceptors.response.use(
     const body = response.data
     if (body && typeof body === 'object' && 'code' in body) {
       if (body.code !== 200) {
-        ElMessage.error(body.msg || '请求失败')
-        return Promise.reject(new Error(body.msg || '请求失败'))
+        const message = localize(body.msg || '请求失败')
+        ElMessage.error(message)
+        return Promise.reject(new Error(message))
       }
       return body.data
     }
@@ -21,7 +30,7 @@ http.interceptors.response.use(
   },
   (error) => {
     const message =
-      error.response?.data?.msg || error.message || '网络请求失败，请检查后端服务'
+      localize(error.response?.data?.msg || error.message) || i18n.global.t('网络请求失败，请检查后端服务')
     ElMessage.error(message)
     return Promise.reject(error)
   }

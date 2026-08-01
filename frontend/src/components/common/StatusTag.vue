@@ -1,6 +1,6 @@
 <template>
   <el-tag :type="statusMeta.type" size="small" effect="plain">
-    {{ statusMeta.label }}
+    {{ $t(statusMeta.label) }}
   </el-tag>
 </template>
 

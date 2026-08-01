@@ -44,6 +44,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   box: { type: Object, default: null },
@@ -52,6 +53,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['box-change', 'drag-start', 'drag-end'])
+const { t } = useI18n()
 
 const CENTER_MIN = -2000
 const CENTER_MAX = 2000
@@ -178,7 +180,7 @@ function updateHint(event) {
 function warnClamped() {
   if (clampedWarned) return
   clampedWarned = true
-  ElMessage.warning('拖拽已自动限制在合理范围：中心 ±2000 Å，尺寸 1–200 Å')
+  ElMessage.warning(t('拖拽已自动限制在合理范围：中心 ±2000 Å，尺寸 1–200 Å'))
 }
 
 function emitThrottled(box) {
@@ -208,7 +210,7 @@ function beginDrag(type, event, index) {
   }
   clampedWarned = false
   dragHintVisible.value = true
-  dragHintText.value = type === 'vertex' ? '拖拽顶点调整盒子尺寸' : '拖拽盒体移动中心'
+  dragHintText.value = type === 'vertex' ? t('拖拽顶点调整盒子尺寸') : t('拖拽盒体移动中心')
   updateHint(event)
   emit('drag-start')
   window.addEventListener('pointermove', onPointerMove)

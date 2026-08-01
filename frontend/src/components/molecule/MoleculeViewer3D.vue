@@ -20,6 +20,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import * as $3Dmol from '3dmol/build/3Dmol.js'
 
 import BoxDrag from './BoxDrag.vue'
@@ -35,6 +36,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['box-change'])
+const { t } = useI18n()
 
 const BOX_COLOR = '#409eff'
 const EDGE_COLOR = '#2563eb'
@@ -145,7 +147,7 @@ async function loadModels() {
     for (const file of props.files) {
       if (seq !== renderSeq) return
       const response = await fetch(file.url)
-      if (!response.ok) throw new Error(`无法加载结构：${file.url}`)
+      if (!response.ok) throw new Error(t('无法加载结构：{url}', { url: file.url }))
       const text = await response.text()
       if (!text.trim()) continue
       viewer.addModel(text, inferFormat(file.url))
@@ -163,7 +165,7 @@ async function loadModels() {
     viewer.render()
     refreshBoxDrag()
   } catch (error) {
-    ElMessage.error(error.message || '3D 预览加载失败')
+    ElMessage.error(error.message || t('预览加载失败'))
   }
 }
 

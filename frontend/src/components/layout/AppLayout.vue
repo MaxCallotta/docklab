@@ -2,8 +2,8 @@
   <div class="app-layout">
     <header class="app-header">
       <div class="brand">
-        <span class="brand-title">CADD 分子对接平台</span>
-        <span class="brand-sub">本地计算 · 数据不出机</span>
+        <span class="brand-title">{{ $t('CADD 分子对接平台') }}</span>
+        <span class="brand-sub">{{ $t('本地计算 · 数据不出机') }}</span>
       </div>
       <el-menu
         mode="horizontal"
@@ -12,11 +12,15 @@
         :ellipsis="false"
         class="nav-menu"
       >
-        <el-menu-item index="/">新建任务</el-menu-item>
-        <el-menu-item index="/tasks">任务队列</el-menu-item>
-        <el-menu-item index="/settings">软件配置</el-menu-item>
-        <el-menu-item index="/help">使用说明</el-menu-item>
+        <el-menu-item index="/">{{ $t('新建任务') }}</el-menu-item>
+        <el-menu-item index="/tasks">{{ $t('任务队列') }}</el-menu-item>
+        <el-menu-item index="/settings">{{ $t('软件配置') }}</el-menu-item>
+        <el-menu-item index="/help">{{ $t('使用说明') }}</el-menu-item>
       </el-menu>
+      <el-select :model-value="locale" size="small" class="lang-switch" @update:model-value="changeLocale">
+        <el-option value="zh-CN" label="中文" />
+        <el-option value="en" label="English" />
+      </el-select>
     </header>
 
     <main class="app-main">
@@ -24,7 +28,7 @@
     </main>
 
     <footer class="app-footer">
-      本地分子对接可视化科研平台 · 所有分子数据仅存储于本机
+      {{ $t('本地分子对接可视化科研平台 · 所有分子数据仅存储于本机') }}
     </footer>
   </div>
 </template>
@@ -32,8 +36,18 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { setLocale } from '../../i18n'
 
 const route = useRoute()
+const { t, locale } = useI18n()
+
+function changeLocale(value) {
+  setLocale(value)
+  const pageTitle = t(route.meta.title || '平台')
+  document.title = `${pageTitle} | ${t('CADD 分子对接平台')}`
+}
+
 const activeMenu = computed(() => {
   if (route.path.startsWith('/result')) return '/tasks'
   if (route.path.startsWith('/tasks')) return '/tasks'
@@ -79,6 +93,11 @@ const activeMenu = computed(() => {
 
 .nav-menu {
   border-bottom: none;
+}
+
+.lang-switch {
+  width: 110px;
+  margin-left: 16px;
 }
 
 .app-main {

@@ -1,6 +1,7 @@
 import { computed, onUnmounted, ref } from 'vue'
 import { getTask } from '../api/task'
 import { STATUS_MAP } from '../utils/constants'
+import i18n from '../i18n'
 
 // 任务状态轮询：排队 5%，运行中 45%，完成/失败 100%
 export function useTaskPolling(taskId, interval = 1500) {
@@ -13,7 +14,10 @@ export function useTaskPolling(taskId, interval = 1500) {
     if (status.value === 'running') return 45
     return 5
   })
-  const statusLabel = computed(() => STATUS_MAP[status.value]?.label || status.value)
+  const statusLabel = computed(() => {
+    const label = STATUS_MAP[status.value]?.label
+    return label ? i18n.global.t(label) : status.value
+  })
 
   async function poll() {
     if (!taskId.value) return
