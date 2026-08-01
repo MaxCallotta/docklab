@@ -484,7 +484,7 @@ async function saveTemplate() {
 .left-stack {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 .upload-block {
@@ -496,7 +496,7 @@ async function saveTemplate() {
 .box-block {
   position: relative;
   z-index: 0;
-  margin-top: 16px;
+  margin-top: 18px;
   overflow: hidden;
 }
 
@@ -504,7 +504,7 @@ async function saveTemplate() {
 .box-canvas-wrap {
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px dashed var(--cadd-border);
+  border-top: 1px dashed rgba(96, 165, 250, 0.22);
   overflow: hidden;
 }
 
@@ -538,6 +538,12 @@ async function saveTemplate() {
   margin-bottom: 8px;
   font-size: 12px;
   line-height: 1.6;
+  opacity: 0.6;
+  transition: opacity 0.25s ease-out;
+}
+
+.preview-guide:hover {
+  opacity: 1;
 }
 
 .box-summary {
@@ -552,9 +558,24 @@ async function saveTemplate() {
   gap: 16px;
   margin-top: 14px;
   padding: 14px 18px;
-  background: var(--cadd-panel);
-  border: 1px solid var(--cadd-border);
-  border-radius: var(--cadd-radius);
+  background: rgba(17, 25, 43, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--cadd-radius-card);
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+.col-right :deep(.section-panel) {
+  border-color: rgba(96, 165, 250, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 20px 46px rgba(0, 0, 0, 0.28);
+}
+
+.col-right :deep(.viewer3d) {
+  border-color: rgba(96, 165, 250, 0.22);
 }
 
 .task-progress {

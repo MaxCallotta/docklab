@@ -70,8 +70,10 @@ const activeMenu = computed(() => {
   justify-content: space-between;
   height: 56px;
   padding: 0 20px;
-  background: #0a101c;
-  border-bottom: 1px solid var(--cadd-border);
+  background: rgba(11, 16, 32, 0.78);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 0 rgba(59, 130, 246, 0.08);
+  backdrop-filter: blur(12px);
 }
 
 .brand {
@@ -114,6 +116,8 @@ const activeMenu = computed(() => {
   color: var(--cadd-muted);
   font-size: 12px;
   border-top: 1px solid var(--cadd-border);
-  background: #0a101c;
+  background: rgba(11, 16, 32, 0.72);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
 }
 </style>

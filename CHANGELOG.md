@@ -42,6 +42,8 @@
   - 文件：frontend/src/i18n/index.js、frontend/src/components/layout/AppLayout.vue
 - 前端黑蓝深色科技主题，统一面板、表格、表单与 3D 预览配色
   - 文件：frontend/src/styles/index.css、frontend/src/App.vue、frontend/src/components/molecule/MoleculeViewer3D.vue
+- 深空轻奢视觉细化：玻璃拟态卡片、渐变按钮、圆角输入、Tab/下拉动效、3D 盒子呼吸光效
+  - 文件：frontend/src/styles/index.css、frontend/src/components/molecule/BoxDrag.vue、frontend/src/views/HomeView.vue
 
 ### 修改
 - 移除代码与文档中的本机硬编码路径，数据目录默认为用户级目录

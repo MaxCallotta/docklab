@@ -327,16 +327,20 @@ defineExpose({ refresh })
 }
 
 .box-body {
-  fill: rgba(64, 158, 255, 0.08);
-  stroke: rgba(37, 99, 235, 0.9);
+  fill: rgba(59, 130, 246, 0.12);
+  stroke: rgba(96, 165, 250, 0.9);
   stroke-width: 1.5;
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.3));
   pointer-events: auto;
   cursor: grab;
-  transition: fill 0.15s ease;
+  transition:
+    fill 0.2s ease-out,
+    filter 0.2s ease-out;
 }
 
 .box-body:hover {
-  fill: rgba(64, 158, 255, 0.18);
+  fill: rgba(59, 130, 246, 0.2);
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
 }
 
 .box-body:active {
@@ -344,29 +348,44 @@ defineExpose({ refresh })
 }
 
 .box-edge {
-  stroke: rgba(37, 99, 235, 0.85);
+  stroke: rgba(96, 165, 250, 0.85);
   stroke-width: 1.5;
+  filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.45));
   pointer-events: none;
 }
 
 .box-handle {
-  fill: #f97316;
-  stroke: #ffffff;
+  fill: #60A5FA;
+  stroke: rgba(255, 255, 255, 0.85);
   stroke-width: 2;
   pointer-events: auto;
   cursor: grab;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
-  transition: r 0.12s ease, fill 0.12s ease;
+  animation: handle-breathe 2.4s ease-in-out infinite;
+  transition: r 0.2s ease-out, fill 0.2s ease-out, filter 0.2s ease-out;
 }
 
 .box-handle:hover {
-  fill: #fb923c;
+  fill: #93C5FD;
   r: 8.5;
+  animation-duration: 0.8s;
 }
 
 .box-handle:active {
   cursor: grabbing;
-  fill: #ea580c;
+  fill: #3B82F6;
+}
+
+@keyframes handle-breathe {
+  0%,
+  100% {
+    opacity: 0.65;
+    filter: drop-shadow(0 0 3px rgba(59, 130, 246, 0.35));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 9px rgba(96, 165, 250, 0.65));
+  }
 }
 
 .drag-hint {

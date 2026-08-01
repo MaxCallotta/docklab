@@ -246,7 +246,13 @@ defineExpose({ render: loadModels })
   width: 100%;
   border: 1px solid var(--cadd-border);
   border-radius: var(--cadd-radius);
-  background: #0a101c;
+  background:
+    linear-gradient(180deg, rgba(59, 130, 246, 0.06), rgba(10, 16, 28, 0.4)),
+    #0A101C;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  box-shadow:
+    inset 0 0 34px rgba(0, 0, 0, 0.35),
+    0 0 24px rgba(59, 130, 246, 0.05);
   overflow: hidden;
 }
 </style>
