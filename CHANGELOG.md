@@ -50,6 +50,8 @@
   - 文件：frontend/src/utils/backendMessages.js、frontend/src/api/http.js、frontend/src/views/HomeView.vue、frontend/src/views/ResultView.vue
 - 新建任务页左侧栏加宽，右侧预览区新增悬浮式 3D 视图控制与盒子快捷操作栏
   - 文件：frontend/src/views/HomeView.vue、frontend/src/components/molecule/MoleculeViewer3D.vue、frontend/src/components/config/BoxConfigPanel.vue
+- 新增独立「分子预处理工具箱」页面与 `/api/preprocess` 后端接口
+  - 文件：frontend/src/views/PreprocessView.vue、frontend/src/components/preprocess/*、backend/app/preprocess/*
 
 ### 修改
 - 移除代码与文档中的本机硬编码路径，数据目录默认为用户级目录

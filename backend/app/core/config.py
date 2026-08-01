@@ -81,6 +81,9 @@ class Settings:
     log_level: str = "INFO"
     upload_max_mb: int = 200
     default_timeout_seconds: int = 7200
+    preprocess_concurrency: int = 2
+    preprocess_cleanup_hours: int = 24
+    preprocess_max_conformations: int = 50
     engine: EngineConfig = field(default_factory=EngineConfig)
     pymol_bin: str = ""
     fpocket_bin: str = ""
@@ -149,10 +152,34 @@ class Settings:
         except ValueError:
             upload_max_mb = 200
 
+        try:
+            preprocess_concurrency = int(
+                _env("PREPROCESS_CONCURRENCY") or runtime_config.get("preprocess_concurrency", 2)
+            )
+        except ValueError:
+            preprocess_concurrency = 2
+
+        try:
+            preprocess_cleanup_hours = int(
+                _env("PREPROCESS_CLEANUP_HOURS") or runtime_config.get("preprocess_cleanup_hours", 24)
+            )
+        except ValueError:
+            preprocess_cleanup_hours = 24
+
+        try:
+            preprocess_max_conformations = int(
+                _env("PREPROCESS_MAX_CONFORMATIONS") or runtime_config.get("preprocess_max_conformations", 50)
+            )
+        except ValueError:
+            preprocess_max_conformations = 50
+
         return cls(
             pax_data_root=root,
             log_level=_env("LOG_LEVEL") or "INFO",
             upload_max_mb=upload_max_mb,
+            preprocess_concurrency=max(1, min(preprocess_concurrency, 16)),
+            preprocess_cleanup_hours=max(1, preprocess_cleanup_hours),
+            preprocess_max_conformations=max(1, min(preprocess_max_conformations, 200)),
             engine=engine,
             pymol_bin=pymol_bin,
             fpocket_bin=fpocket_bin,

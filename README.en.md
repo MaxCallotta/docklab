@@ -43,6 +43,7 @@ DockLab is a local-first molecular docking platform built for drug discovery and
 | --- | --- |
 | Molecule input | PDB ID, CDXML, SDF, MOL, MOL2, SMILES |
 | Receptor preparation | Water/heteroatom removal, PDBQT generation |
+| Preprocessing toolbox | Batch upload, standardization, conformer generation, property calculation, format conversion |
 | 3D visualization | Protein cartoon, ligand poses, docking box rendering |
 | Docking box | Manual coordinates, canvas dragging, automated pocket prediction |
 | Docking engines | AutoDock Vina, AutoDock4/AutoGrid4 extension interface |

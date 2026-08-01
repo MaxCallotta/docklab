@@ -25,6 +25,7 @@ class RuntimePaths:
     tmp_dir: Path
     exports_dir: Path
     pdb_cache_dir: Path
+    preprocess_dir: Path
 
     @classmethod
     def from_settings(cls, settings: Settings) -> "RuntimePaths":
@@ -40,6 +41,7 @@ class RuntimePaths:
             tmp_dir=root / "tmp",
             exports_dir=root / "exports",
             pdb_cache_dir=root / "cache" / "pdb",
+            preprocess_dir=root / "tmp" / "preprocess",
         )
 
     def ensure_all(self) -> None:
@@ -53,6 +55,7 @@ class RuntimePaths:
             self.tmp_dir,
             self.exports_dir,
             self.pdb_cache_dir,
+            self.preprocess_dir,
         ):
             path.mkdir(parents=True, exist_ok=True)
 

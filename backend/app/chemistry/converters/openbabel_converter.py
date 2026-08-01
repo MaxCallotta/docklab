@@ -136,3 +136,30 @@ class OpenBabelConverter:
         cls._run([str(source), "-O", str(output)], friendly_name="OpenBabel 格式转换器")
         cls._check_output(output, "格式转换未生成有效输出。")
         return output
+
+    @classmethod
+    def convert_with_options(
+        cls,
+        source: Path,
+        output: Path,
+        *,
+        add_h: bool = False,
+        compute_charges: bool = False,
+        gen3d: bool = False,
+    ) -> Path:
+        """通用格式转换，支持加氢、Gasteiger 电荷与 3D 生成。"""
+
+        ensure_dir(output.parent)
+        options: list[str] = []
+        if add_h:
+            options.append("-h")
+        if compute_charges:
+            options += ["--partialcharge", "gasteiger"]
+        if gen3d:
+            options.append("--gen3d")
+        cls._run(
+            [str(source), "-O", str(output), *options],
+            friendly_name="OpenBabel 预处理转换器",
+        )
+        cls._check_output(output, "预处理转换未生成有效输出。")
+        return output

@@ -20,6 +20,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from app import __version__
 from app.api.v1.router import api_router
+from app.preprocess.router import router as preprocess_router
 from app.core.constants import ErrorCode
 from app.core.exceptions import AppError
 from app.core.logging import bind_log_context, reset_log_context, setup_logging
@@ -75,6 +76,7 @@ def create_app() -> FastAPI:
     app.add_middleware(LogContextMiddleware)
 
     app.include_router(api_router)
+    app.include_router(preprocess_router, prefix="/api/preprocess")
 
     # 单进程部署：后端直接托管前端构建产物（frontend/dist）
     frontend_dist = (

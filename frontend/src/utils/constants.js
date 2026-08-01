@@ -45,6 +45,17 @@ export const RECEPTOR_ACCEPT = '.pdb,.pdbqt'
 export const RECEPTOR_EXTENSIONS = ['.pdb', '.pdbqt']
 export const MAX_UPLOAD_MB = 200
 
+export const PREPROCESS_ACCEPT = '.cdxml,.sdf,.mol2,.smi,.txt,.pdbqt'
+export const PREPROCESS_EXTENSIONS = ['.cdxml', '.sdf', '.mol2', '.smi', '.txt', '.pdbqt']
+
+export const PREPROCESS_OUTPUT_FORMATS = [
+  { label: 'CDXML', value: 'cdxml' },
+  { label: 'SDF', value: 'sdf' },
+  { label: 'MOL2', value: 'mol2' },
+  { label: 'PDBQT', value: 'pdbqt' },
+  { label: 'SMILES', value: 'smi' }
+]
+
 export const POSE_FORMATS = [
   { label: 'PDBQT', value: 'pdbqt' },
   { label: 'PDB', value: 'pdb' },

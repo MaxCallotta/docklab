@@ -16,6 +16,7 @@
         <el-menu-item index="/tasks">{{ $t('任务队列') }}</el-menu-item>
         <el-menu-item index="/settings">{{ $t('软件配置') }}</el-menu-item>
         <el-menu-item index="/help">{{ $t('使用说明') }}</el-menu-item>
+        <el-menu-item index="/preprocess">{{ $t('预处理工具箱') }}</el-menu-item>
       </el-menu>
       <el-select :model-value="locale" size="small" class="lang-switch" @update:model-value="changeLocale">
         <el-option value="zh-CN" label="中文" />
@@ -53,6 +54,7 @@ const activeMenu = computed(() => {
   if (route.path.startsWith('/tasks')) return '/tasks'
   if (route.path.startsWith('/settings')) return '/settings'
   if (route.path.startsWith('/help')) return '/help'
+  if (route.path.startsWith('/preprocess')) return '/preprocess'
   return '/'
 })
 </script>

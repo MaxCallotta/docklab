@@ -144,6 +144,11 @@ addRule('PML 脚本生成失败。', 'PML script generation failed.')
 addRule('本地未找到 PyMOL 可执行程序。', 'Local PyMOL executable not found.')
 addRule('本地网络请求失败（仅允许 RCSB PDB 拉取）。', 'Local network request failed (only RCSB PDB downloads are allowed).')
 addRule('请求参数校验失败。', 'Request parameter validation failed.')
+addRule('不允许预处理该文件类型：{suffix}', 'This file type is not allowed for preprocessing: $1')
+addRule('不支持预处理输出格式：{output_format}', 'Unsupported preprocessing output format: $1')
+addRule('上传会话不存在：{session_id}', 'Upload session not found: $1')
+addRule('预处理批次不存在：{batch_id}', 'Preprocessing batch not found: $1')
+addRule('预处理文件不存在：{file_id}', 'Preprocessing file not found: $1')
 
 export function translateBackendMessage(message) {
   if (!message) return message

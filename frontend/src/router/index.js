@@ -31,6 +31,12 @@ const routes = [
     name: 'help',
     component: () => import('../views/HelpView.vue'),
     meta: { title: '使用说明' }
+  },
+  {
+    path: '/preprocess',
+    name: 'preprocess',
+    component: () => import('../views/PreprocessView.vue'),
+    meta: { title: '分子预处理工具箱' }
   }
 ]
 

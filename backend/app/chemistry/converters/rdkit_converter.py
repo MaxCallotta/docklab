@@ -134,3 +134,108 @@ class RdkItConverter:
             "hba": rdMolDescriptors.CalcNumHBA(heavy),
             "heavy_atoms": heavy.GetNumHeavyAtoms(),
         }
+
+    @staticmethod
+    def _output_sdf_path_for_rdkit(output_sdf: Path) -> tuple[Path, Path | None]:
+        """Windows 下避免将 RDKit 输出写入含非 ASCII 字符的路径。"""
+
+        output_sdf = Path(output_sdf)
+        if str(output_sdf).isascii():
+            return output_sdf, None
+        fd, tmp_name = tempfile.mkstemp(prefix="rdkit_out_", suffix=".sdf")
+        os.close(fd)
+        return Path(tmp_name), output_sdf
+
+    @staticmethod
+    def remove_salts(sdf_path: Path, output_sdf: Path) -> Path:
+        """移除盐/溶剂片段，仅保留重原子数最多的片段。"""
+
+        Chem = _get_rdkit()
+        mol = RdkItConverter._load_mol(sdf_path)
+        if mol is None:
+            raise MoleculeValidationError("SDF 中未找到有效分子，无法去盐。")
+        fragments = Chem.GetMolFrags(mol, asMols=True, sanitizeFrags=False)
+        if not fragments:
+            raise MoleculeValidationError("SDF 中未找到有效分子片段。")
+        main_fragment = max(fragments, key=lambda item: item.GetNumHeavyAtoms())
+        output_sdf, final_path = RdkItConverter._output_sdf_path_for_rdkit(output_sdf)
+        try:
+            ensure_dir(output_sdf.parent)
+            writer = Chem.SDWriter(str(output_sdf))
+            writer.write(main_fragment)
+            writer.close()
+            if final_path is not None:
+                shutil.copy2(output_sdf, final_path)
+        finally:
+            if final_path is not None:
+                output_sdf.unlink(missing_ok=True)
+        return final_path or output_sdf
+
+    @staticmethod
+    def remove_duplicates(sdf_path: Path, output_sdf: Path) -> Path:
+        """基于规范 SMILES 去重，保留首次出现的分子。"""
+
+        Chem = _get_rdkit()
+        output_sdf, final_path = RdkItConverter._output_sdf_path_for_rdkit(output_sdf)
+        try:
+            ensure_dir(output_sdf.parent)
+            supplier = Chem.SDMolSupplier(str(sdf_path), sanitize=True, removeHs=False)
+            seen: set[str] = set()
+            writer = Chem.SDWriter(str(output_sdf))
+            for mol in supplier:
+                if mol is None:
+                    continue
+                key = Chem.MolToSmiles(Chem.RemoveHs(mol))
+                if key in seen:
+                    continue
+                seen.add(key)
+                writer.write(mol)
+            writer.close()
+            if final_path is not None:
+                shutil.copy2(output_sdf, final_path)
+        finally:
+            if final_path is not None:
+                output_sdf.unlink(missing_ok=True)
+        return final_path or output_sdf
+
+    @staticmethod
+    def generate_conformations(sdf_path: Path, output_sdf: Path, num_confs: int = 1) -> Path:
+        """基于 3D 嵌入生成指定数量的构象。"""
+
+        Chem = _get_rdkit()
+        from rdkit.Chem import AllChem  # noqa: PLC0415
+
+        mol = RdkItConverter._load_mol(sdf_path)
+        if mol is None:
+            raise MoleculeValidationError("SDF 中未找到有效分子，无法生成构象。")
+        output_sdf, final_path = RdkItConverter._output_sdf_path_for_rdkit(output_sdf)
+        try:
+            ensure_dir(output_sdf.parent)
+            mol_h = Chem.AddHs(mol)
+            params = AllChem.ETKDGv3()
+            params.randomSeed = 0xC0FFEE
+            if num_confs <= 1:
+                AllChem.EmbedMolecule(mol_h, params)
+                try:
+                    AllChem.MMFFOptimizeMolecule(mol_h)
+                except Exception:
+                    pass
+            else:
+                AllChem.EmbedMultipleConfs(
+                    mol_h,
+                    numConfs=max(1, min(num_confs, 50)),
+                    params=params,
+                )
+                try:
+                    AllChem.MMFFOptimizeMoleculeConfs(mol_h)
+                except Exception:
+                    pass
+            writer = Chem.SDWriter(str(output_sdf))
+            writer.write(mol_h)
+            writer.close()
+            if final_path is not None:
+                shutil.copy2(output_sdf, final_path)
+        finally:
+            if final_path is not None:
+                output_sdf.unlink(missing_ok=True)
+        return final_path or output_sdf
