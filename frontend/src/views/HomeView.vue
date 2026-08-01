@@ -552,7 +552,7 @@ async function saveTemplate() {
   gap: 16px;
   margin-top: 14px;
   padding: 14px 18px;
-  background: #ffffff;
+  background: var(--cadd-panel);
   border: 1px solid var(--cadd-border);
   border-radius: var(--cadd-radius);
 }

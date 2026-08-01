@@ -27,6 +27,8 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-left: 8px;
+  border-left: 3px solid var(--cadd-accent);
 }
 
 .section-title {

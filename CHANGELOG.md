@@ -40,6 +40,8 @@
   - 文件：README.md、README.en.md
 - 前端中英文界面切换与 i18n 语言包
   - 文件：frontend/src/i18n/index.js、frontend/src/components/layout/AppLayout.vue
+- 前端黑蓝深色科技主题，统一面板、表格、表单与 3D 预览配色
+  - 文件：frontend/src/styles/index.css、frontend/src/App.vue、frontend/src/components/molecule/MoleculeViewer3D.vue
 
 ### 修改
 - 移除代码与文档中的本机硬编码路径，数据目录默认为用户级目录

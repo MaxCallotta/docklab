@@ -70,7 +70,7 @@ const activeMenu = computed(() => {
   justify-content: space-between;
   height: 56px;
   padding: 0 20px;
-  background: #ffffff;
+  background: #0a101c;
   border-bottom: 1px solid var(--cadd-border);
 }
 
@@ -84,6 +84,7 @@ const activeMenu = computed(() => {
   font-size: 17px;
   font-weight: 600;
   color: var(--cadd-ink);
+  letter-spacing: 0.2px;
 }
 
 .brand-sub {
@@ -113,6 +114,6 @@ const activeMenu = computed(() => {
   color: var(--cadd-muted);
   font-size: 12px;
   border-top: 1px solid var(--cadd-border);
-  background: #ffffff;
+  background: #0a101c;
 }
 </style>

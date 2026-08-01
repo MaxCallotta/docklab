@@ -203,7 +203,7 @@ watch(
 
 onMounted(() => {
   viewer = $3Dmol.createViewer(container.value, {
-    backgroundColor: 'white',
+    backgroundColor: '#0a101c',
     antialias: true
   })
   projector.value = {
@@ -246,7 +246,7 @@ defineExpose({ render: loadModels })
   width: 100%;
   border: 1px solid var(--cadd-border);
   border-radius: var(--cadd-radius);
-  background: #ffffff;
+  background: #0a101c;
   overflow: hidden;
 }
 </style>
